@@ -3,8 +3,8 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
-import Landing from "../app/access/view/LandingView";
-import Signing from "../app/access/view/SIgningView";
+import Landing from "../app/access/views/LandingView";
+import Signing from "../app/access/views/SIgningView";
 
 export type AuthStackParamList = {
   Landing: undefined;
