@@ -55,6 +55,7 @@ import React, {
           ? date.toLocaleDateString("default", { month: "short" })
           : "";
   
+        const dateColor = date.getMonth() === selectedDate.getMonth() ? "black" : "grey";
         return (
           <TouchableOpacity
             key={index}
@@ -69,6 +70,7 @@ import React, {
             <Text
               style={[
                 styles.dateText,
+                { color: dateColor },
                 date.getTime() === selectedDate.getTime() && styles.selectedDate,
               ]}
             >
@@ -172,29 +174,31 @@ import React, {
     const insets = useSafeAreaInsets();
   
     return (
-      <SafeAreaView style={{ ...styles.container, marginBottom: -insets.bottom }}>
-        <Header
-          leftComponent={
-            <Fragment>
-              <Button
-                onPress={() => {}}
-                imgSource={profile}
-                style={styles.profileImage}
-                imgStyle={styles.profileImage}
-              />
-              <Text style={styles.monthText}>{getMonthName(selectedDate)}</Text>
-            </Fragment>
-          }
-          middleComponent={null}
-          rightComponent={null}
-        />
-        <View style={styles.dayContainer}>
-          {daysOfWeek.map((day, index) => (
-            <View key={index} style={styles.cell}>
-              <Text style={styles.dayText}>{day}</Text>
-            </View>
-          ))}
-        </View>
+      <SafeAreaView style={styles.container}>
+
+          <Header
+            leftComponent={
+              <Fragment>
+                <Button
+                  onPress={() => {}}
+                  imgSource={profile}
+                  style={styles.profileImage}
+                  imgStyle={styles.profileImage}
+                />
+                <Text style={styles.monthText}>{getMonthName(selectedDate)}</Text>
+              </Fragment>
+            }
+            middleComponent={null}
+            rightComponent={null}
+          />
+          <View style={styles.dayContainer}>
+            {daysOfWeek.map((day, index) => (
+              <View key={index} style={styles.cell}>
+                <Text style={styles.dayText}>{day}</Text>
+              </View>
+            ))}
+          </View>
+
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.panel, animatedStyles]}>
             <View style={styles.dragHandle} />
@@ -243,7 +247,7 @@ import React, {
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      flex: 0.1,
       backgroundColor: "white",
     },
     monthlyContainer: {
@@ -258,6 +262,7 @@ import React, {
     dayContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
+      backgroundColor: "white",
     },
     dayText: {
       fontSize: 16,

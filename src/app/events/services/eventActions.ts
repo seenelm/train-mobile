@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
-import { createEvent } from "./eventService";
+import { createEvent } from "./eventServices";
 import { CreateEventRequest } from "../models/createEventRequest";
 import { CreateEventResponse } from "../models/createEventResponse";
 
@@ -13,7 +13,7 @@ export const useCreateEvent = () => {
       },
       onError: (error) => {
         // log error to file
-        console.error("useAddGroup mutation error: ", error);
+        console.error("useCreateEvent mutation error: ", error);
       },
     });
   };
