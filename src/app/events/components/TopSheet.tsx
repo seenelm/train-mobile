@@ -35,7 +35,6 @@ import React, {
   import Header from "./Header";
   import {
     SafeAreaView,
-    useSafeAreaInsets,
   } from "react-native-safe-area-context";
   
   const START_HEIGHT = Dimensions.get("window").height * 0.05;
@@ -167,15 +166,17 @@ import React, {
       },
     });
   
-    const animatedStyles = useAnimatedStyle(() => ({
+    const animatedContainerStyles = useAnimatedStyle(() => ({
+      height: panelHeight.value + 150,
+    }));
+  
+    const animatedPanelStyles = useAnimatedStyle(() => ({
       height: panelHeight.value,
     }));
   
-    const insets = useSafeAreaInsets();
-  
     return (
-      <SafeAreaView style={styles.container}>
-
+      <Animated.View style={[styles.container, animatedContainerStyles]}>
+        <SafeAreaView>
           <Header
             leftComponent={
               <Fragment>
@@ -198,56 +199,57 @@ import React, {
               </View>
             ))}
           </View>
-
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={[styles.panel, animatedStyles]}>
-            <View style={styles.dragHandle} />
-            <View style={styles.containerCal}>
-              {viewMode === "month" ? (
-                <FlatList
-                  ref={flatListRef}
-                  data={allWeeks}
-                  renderItem={({ item }) => (
-                    <Week
-                      week={item}
-                      selectedDate={selectedDate}
-                      onSelectDate={onSelectDate}
-                    />
-                  )}
-                  keyExtractor={(item, index) => index.toString()}
-                  scrollEnabled={isScrollable}
-                  initialScrollIndex={initialScrollIndex}
-                  getItemLayout={(data, index) => ({
-                    length: 40,
-                    offset: 40 * index,
-                    index,
-                  })}
-                  onScrollToIndexFailed={(info) => {
-                    setTimeout(() => {
-                      flatListRef.current?.scrollToIndex({
-                        index: info.index,
-                        animated: true,
-                      });
-                    }, 500);
-                  }}
-                />
-              ) : (
-                <Week
-                  week={getCurrentWeek(selectedDate)}
-                  selectedDate={selectedDate}
-                  onSelectDate={onSelectDate}
-                />
-              )}
-            </View>
-          </Animated.View>
-        </PanGestureHandler>
-      </SafeAreaView>
+  
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={[styles.panel, animatedPanelStyles]}>
+              <View style={styles.dragHandle} />
+              <View style={styles.containerCal}>
+                {viewMode === "month" ? (
+                  <FlatList
+                    ref={flatListRef}
+                    data={allWeeks}
+                    renderItem={({ item }) => (
+                      <Week
+                        week={item}
+                        selectedDate={selectedDate}
+                        onSelectDate={onSelectDate}
+                      />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    scrollEnabled={isScrollable}
+                    initialScrollIndex={initialScrollIndex}
+                    getItemLayout={(data, index) => ({
+                      length: 40,
+                      offset: 40 * index,
+                      index,
+                    })}
+                    onScrollToIndexFailed={(info) => {
+                      setTimeout(() => {
+                        flatListRef.current?.scrollToIndex({
+                          index: info.index,
+                          animated: true,
+                        });
+                      }, 500);
+                    }}
+                  />
+                ) : (
+                  <Week
+                    week={getCurrentWeek(selectedDate)}
+                    selectedDate={selectedDate}
+                    onSelectDate={onSelectDate}
+                  />
+                )}
+              </View>
+            </Animated.View>
+          </PanGestureHandler>
+        </SafeAreaView>
+      </Animated.View>
     );
   };
   
   const styles = StyleSheet.create({
     container: {
-      flex: 0.1,
+      flex: 0,
       backgroundColor: "white",
     },
     monthlyContainer: {
@@ -330,27 +332,6 @@ import React, {
       width: 35,
       height: 35,
       borderRadius: 25,
-    },
-    addGroupIcon: {
-      width: 24,
-      height: 24,
-    },
-    addGroupButton: {
-      backgroundColor: "white",
-      borderRadius: 30,
-      width: 55,
-      height: 55,
-      bottom: 20,
-      right: 15,
-      position: "absolute", // Add this line to position it absolutely.
-      alignSelf: "flex-end",
-      shadowColor: "#000", // For iOS
-      shadowOffset: {
-        width: 0,
-        height: 2, // Shadow position
-      },
-      shadowOpacity: 0.3, // Shadow opacity
-      shadowRadius: 4.65, // Blur radius
     },
   });
   

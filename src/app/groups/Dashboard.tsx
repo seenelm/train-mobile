@@ -1,9 +1,13 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import Card from "../../components/card";
+import Button from "../../components/button";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../services/store";
+import { logout } from "../../services/authSlice";
 
 const Dashboard: React.FC = () => {
-  // Array of card data
+  const dispatch = useDispatch<AppDispatch>();
   const cardData = [
     {
       imageUrl: "https://via.placeholder.com/150",
@@ -23,12 +27,6 @@ const Dashboard: React.FC = () => {
       groupId: { id: 3 },
       onPress: () => console.log("Pressed Fitspace C"),
     },
-    {
-      imageUrl: "https://via.placeholder.com/150",
-      groupName: "Fitspace D",
-      groupId: { id: 4 },
-      onPress: () => console.log("Pressed Fitspace D"),
-    },
   ];
 
   return (
@@ -44,6 +42,13 @@ const Dashboard: React.FC = () => {
           />
         ))}
       </ScrollView>
+      <Button
+        onPress={() => dispatch(logout())}
+        imgSource={() => null}
+        style={{ backgroundColor: "red", width: "20%" }}>
+        
+        Logout
+        </Button>
     </View>
   );
 };

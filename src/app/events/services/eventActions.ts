@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "react-query";
-import { createEvent } from "./eventServices";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { createEvent, getUserEvents } from "./eventServices";
 import { CreateEventRequest } from "../models/createEventRequest";
 import { CreateEventResponse } from "../models/createEventResponse";
+import { ObjectId } from "mongodb";
 
 export const useCreateEvent = () => {
     const queryClient = useQueryClient();
@@ -17,3 +18,14 @@ export const useCreateEvent = () => {
       },
     });
   };
+
+export const useGetUserEvents = (userId: string) => {
+    return useQuery({
+      queryKey: ["userEvents", userId],
+      queryFn: () => getUserEvents(userId),
+      onError: (error) => {
+        // log error to file
+        console.error("useGetUserEvents query error: ", error);
+      },
+    });
+  }

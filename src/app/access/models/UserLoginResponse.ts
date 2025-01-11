@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 
 export interface UserLoginResponse {
-    userId: ObjectId;
-    token: string | void;
+    userId: string;
+    token: string;
     username: string;
     name: string;
 }
