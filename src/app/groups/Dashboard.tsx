@@ -55,15 +55,14 @@ const Dashboard: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Ensures the container takes up the full height and width
-    backgroundColor: "#f5f5f5",
+    flex: 1,
   },
   dashboard: {
-    flexGrow: 1, // Allows the content to expand and fill the ScrollView
+    flexGrow: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    alignItems: "flex-start", // Ensures the items are aligned at the top
+    alignItems: "flex-start",
     padding: 10,
   },
 });

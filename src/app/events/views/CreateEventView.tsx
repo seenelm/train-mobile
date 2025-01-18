@@ -5,6 +5,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import Button from "../../../components/button";
 import Form from "../../../components/form";
 import { FormProps } from "../types/Inputs";
+import { useCreateEvent } from "../services/eventActions";
+import { CreateEventRequest } from "../models/createEventRequest";
 
 const CreateEventView: React.FC = () => {
   const [eventName, setEventName] = useState("");

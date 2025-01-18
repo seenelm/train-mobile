@@ -10,7 +10,7 @@ export const useCreateEvent = () => {
     return useMutation({
       mutationFn: (createEventRequest: CreateEventRequest): Promise<CreateEventResponse> => createEvent(createEventRequest),
       onSuccess: () => {
-        queryClient.invalidateQueries(["event"]);
+        queryClient.invalidateQueries(["userEvents"]);
       },
       onError: (error) => {
         // log error to file
