@@ -5,29 +5,16 @@ Welcome to the project! Follow the steps below to get started. 🎉
 Prerequisites
 Before starting, ensure the following dependencies are installed on your system:
 
-Node.js & npm:
-Install Node.js (LTS recommended) from Node.js official website.
-Verify installation:
-node -v
-npm -v
-React Native CLI:
-Install globally if not already installed:
-npm install -g react-native-cli
-CocoaPods (for iOS dependencies):
-Install using Ruby:
-sudo gem install cocoapods
-Verify installation:
-pod --version
-Xcode (for iOS builds):
-Ensure you have the latest version installed from the Mac App Store.
-Open Xcode and agree to any license agreements.
-Install additional tools:
-xcode-select --install
-Watchman (to watch file changes):
-Install via Homebrew:
-brew install watchman
-Repository Setup and Build Process
-Follow these steps to clone the repository, install dependencies, and build the project.
+## ⚙️ Prerequisites
+
+| Tool               | Installation Command/URL                          | Verification Command    |
+|--------------------|--------------------------------------------------|-------------------------|
+| **Node.js & npm**   | [Download Node.js (LTS)](https://nodejs.org/)     | `node -v` / `npm -v`    |
+| **React Native CLI**| `npm install -g react-native-cli`                | N/A                     |
+| **CocoaPods**       | `sudo gem install cocoapods`                     | `pod --version`         |
+| **Xcode**           | Install from [Mac App Store](https://apps.apple.com/) | Open Xcode & Agree to Terms |
+| **Watchman**        | `brew install watchman`                          | N/A                     |
+
 
 1. Clone the Repository
 
