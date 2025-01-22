@@ -33,7 +33,7 @@ const EventLanding = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <TopSheet />
-        <View style={{ flex: 1, marginTop: 10 }}>
+        <View style={{ flex: 1}}>
           <FlatList
             data={events}
             renderItem={renderEvent}

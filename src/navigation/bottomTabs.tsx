@@ -12,7 +12,7 @@ import calendarFocused from "../assets/icons/calendar-focus.png";
 
 // Import your screens
 import ChatList from "../app/chat/views/ChatView";
-import Dashboard from "../app/groups/Dashboard";
+import Dashboard from "../app/groups/views/Dashboard";
 import Calendar from "../app/events/views/EventLanding";
 
 const Tab = createBottomTabNavigator();

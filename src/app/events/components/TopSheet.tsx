@@ -5,8 +5,7 @@ import { daysOfWeek, getMonthName, getCurrentWeek, getAllWeeksInYear } from "./D
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Button from "../../../components/button";
 import profile from "../../../assets/icons/profilepic.png";
-import Header from "./Header";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../../components/header";
 import Week from "./Week";
   
 const START_HEIGHT = Dimensions.get("window").height * 0.05;
@@ -106,20 +105,20 @@ const TopSheet: React.FC<CalendarProps> = () => {
 
   return (
     <Animated.View style={[styles.container, animatedContainerStyles]}>
-      <SafeAreaView>
+      <View style={styles.test}>
         <Header
           leftComponent={
             <Fragment>
               <Button
                 onPress={() => {}}
                 imgSource={profile}
-                style={styles.profileImage}
+                style={styles.iconContainer}
                 imgStyle={styles.profileImage}
               />
-              <Text style={styles.monthText}>{getMonthName(selectedDate)}</Text>
+              
             </Fragment>
           }
-          middleComponent={null}
+          middleComponent={<Text style={styles.monthText}>{getMonthName(selectedDate)}</Text>}
           rightComponent={null}
         />
         <View style={styles.dayContainer}>
@@ -172,7 +171,7 @@ const TopSheet: React.FC<CalendarProps> = () => {
             </View>
           </Animated.View>
         </PanGestureHandler>
-      </SafeAreaView>
+      </View>
     </Animated.View>
   );
 };
@@ -180,12 +179,22 @@ const TopSheet: React.FC<CalendarProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    backgroundColor: "white",
+    marginBottom: 13,
+  },
+  test: {
+    backgroundColor: "transparent",
   },
   profileImage: {
     width: 35,
     height: 35,
     borderRadius: 25,
+  },
+  iconContainer: {
+    aspectRatio: 1,
+    maxHeight: 45,
+    maxWidth: 45,
+    backgroundColor: "transparent",
+    // marginBottom: 10,
   },
   monthText: {
     fontSize: 25,

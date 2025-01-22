@@ -2,11 +2,9 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabs from './bottomTabs';
 import CreateEventView from '../app/events/views/CreateEventView';
+import Profile from '../app/chat/views/ChatView';
+import { MainStackParamList } from './types/MainStackParamList';
 
-type MainStackParamList = {
-    BottomTabs: undefined;
-    CreateEvent: undefined;
-  };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -20,6 +18,7 @@ const MainStack = () => {
       >
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="CreateEvent" component={CreateEventView} />
+        <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
     );
   };
