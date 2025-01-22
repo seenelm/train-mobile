@@ -194,13 +194,12 @@ const styles = StyleSheet.create({
     maxHeight: 45,
     maxWidth: 45,
     backgroundColor: "transparent",
-    // marginBottom: 10,
   },
   monthText: {
     fontSize: 25,
     fontWeight: "bold",
     color: "black",
-    marginLeft: 10,
+
   },
   dayContainer: {
     flexDirection: "row",
