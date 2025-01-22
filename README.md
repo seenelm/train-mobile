@@ -1,6 +1,6 @@
-🚀 Advanced Setup and Run Instructions
+🚀 Train Setup and Run Instructions
 
-Welcome to the project! Follow the steps below to get started. 🎉
+Welcome to the train app! Follow the steps below to get started. 🎉
 
 Prerequisites
 Before starting, ensure the following dependencies are installed on your system:
