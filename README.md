@@ -31,3 +31,26 @@ Install all required packages:
 ```bash
 npm install
 ```
+
+### 3️⃣ iOS Setup
+Navigate to the ios directory and install iOS dependencies:
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### 4️⃣ Build and Run the Project
+Build the iOS project and launch it on a simulator or connected device:
+
+```bash
+npx react-native run-ios
+```
+
+### 5️⃣ Start the Metro Bundler - Run
+Once the project has been built, start the React Native Metro bundler:
+
+```bash
+npm start
+```
