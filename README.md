@@ -23,3 +23,11 @@ Clone the repository to your local machine:
 ```bash
 git clone <repository_url>
 cd <repository_directory>
+```
+
+### 2️⃣ Install Dependencies
+Install all required packages:
+
+```bash
+npm install
+```
