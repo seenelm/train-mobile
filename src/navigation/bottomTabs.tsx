@@ -39,7 +39,7 @@ const BottomTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Search"
+      initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "white",
@@ -47,7 +47,7 @@ const BottomTabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="Chat"
         component={ChatList}
         options={{
           tabBarLabel: ({ focused }) => (
@@ -73,7 +73,7 @@ const BottomTabs = () => {
       />
 
       <Tab.Screen
-        name="Search"
+        name="Home"
         component={Dashboard}
         options={{
           tabBarLabel: ({ focused }) => (
@@ -98,7 +98,7 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="Calendar"
         component={Calendar}
         options={{
           tabBarLabel: ({ focused }) => (

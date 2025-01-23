@@ -2,10 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import Card from "../../../components/card";
 import Button from "../../../components/button";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../services/store";
-import { logout } from "../../../services/authSlice";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../../../components/header";
 import { MainStackParamList } from "../../../navigation/types/MainStackParamList";
 import { DashboardProps } from "../types/DashboardProps";
@@ -19,7 +16,6 @@ import bell from "../../../assets/icons/bell.webp"
 
 
 const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const cardData = [
     {
       imageUrl: "https://via.placeholder.com/150",
@@ -86,13 +82,6 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
           />
         ))}
       </ScrollView>
-      <Button
-        onPress={() => dispatch(logout())}
-        imgSource={() => null}
-        style={{ backgroundColor: "red", width: "20%" }}>
-        
-        Logout
-        </Button>
     </View>
   );
 };
