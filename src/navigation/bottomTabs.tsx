@@ -11,7 +11,7 @@ import calendar from "../assets/icons/calendar.png";
 import calendarFocused from "../assets/icons/calendar-focus.png";
 
 // Import your screens
-import ChatList from "../app/chat/views/ChatView";
+import ChatList from "../app/chat/views/ChatListView";
 import Dashboard from "../app/groups/views/Dashboard";
 import Calendar from "../app/events/views/EventLanding";
 
