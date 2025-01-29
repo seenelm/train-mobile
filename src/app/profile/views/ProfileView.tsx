@@ -11,8 +11,6 @@ const ProfileView: React.FC = () => {
   const userId: string | null = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  // const handleLogout = dispatch(logout());
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header Section */}
@@ -39,7 +37,10 @@ const ProfileView: React.FC = () => {
         <Button style={styles.button} onPress={() => {}}>
           Edit Profile
         </Button>
-        <Button style={[styles.button, styles.logoutButton]} onPress={() => {}}>
+        <Button
+          style={[styles.button, styles.logoutButton]}
+          onPress={() => dispatch(logout())}
+        >
           Logout
         </Button>
       </View>

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../../services/store";
-import { signIn, signOut, setIsSignedIn, setUsername } from "../../../services/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../services/store";
+import { useLoginRequest } from "../services/accessActions";
+import { storeToken, fetchCredentials } from "../../../services/actions";
+import { handleSigning } from "../utils/handleSigning";
 import SignInForm from "../components/SignInForm";
 import SignUpForm from "../components/SignUpForm";
-import { useLoginRequest } from "../services/accessActions";
-import { UserLoginRequest } from "../models/UserLoginRequest";
-import { storeToken, fetchCredentials } from "../../../services/actions";
+import Button from "../../../components/button";
 
 const Signing: React.FC = () => {
-  const isSignedIn = useSelector((state: RootState) => state.auth.isSignedIn);
   const dispatch = useDispatch<AppDispatch>();
 
   const [isSignUp, setIsSignUp] = useState(false);
@@ -27,42 +26,7 @@ const Signing: React.FC = () => {
     setConfirmPassword("");
   };
 
-  const handleSubmit = () => {
-    if (isSignUp) {
-      // Handle sign-up logic here
-      if (password !== confirmPassword) {
-        Alert.alert("Error", "Passwords do not match");
-        return;
-      }
-      Alert.alert("Success", "Sign up successful!");
-    } else {
-      // Handle sign-in logic here
-      const userLoginRequest: UserLoginRequest = { username, password };
-      login(userLoginRequest, {
-        onSuccess: async (data) => {
-          console.log("Login successful", data);
-
-          // Store token in Keychain
-          await storeToken(username, data.token);
-
-          // Dispatch Redux actions
-          const user = data.userId.toString();
-          dispatch(signIn(user));
-          dispatch(setUsername(username));
-          dispatch(setIsSignedIn(true));
-
-          Alert.alert("Success", "Login successful!");
-          // Handle successful login (e.g., navigate to another screen)
-        },
-        onError: (error) => {
-          Alert.alert("Error", "Login failed. Please try again.");
-        },
-      });
-    }
-  };
-
   useEffect(() => {
-    // Fetch credentials on app load
     fetchCredentials(dispatch);
   }, [dispatch]);
 
@@ -86,19 +50,13 @@ const Signing: React.FC = () => {
         />
       )}
 
-      <TouchableOpacity
-        onPress={handleSubmit}
-        style={{
-          marginTop: 20,
-          padding: 10,
-          backgroundColor: "blue",
-          borderRadius: 5,
-        }}
-      >
-        <Text style={{ color: "white" }}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </Text>
-      </TouchableOpacity>
+      <Button
+        onPress={() =>
+          handleSigning({isSignUp,password,confirmPassword,username,login,dispatch,storeToken,showAlert: Alert.alert,})
+        }
+        style={{ alignSelf: "center", borderRadius: 10, width: "60%",}}
+        textStyle={{ fontSize: 20, color: "white" }}
+      >Sign {isSignUp ? "Up" : "In"}</Button>
 
       <TouchableOpacity onPress={toggleForm} style={{ marginTop: 20 }}>
         <Text style={{ color: "blue" }}>
