@@ -1,12 +1,10 @@
 import React, { useState, useRef } from "react";
 import { Text, View, TextInput, Animated, Image, StyleSheet } from "react-native";
+import { global } from "../../../utils/global";
 import Message from "../components/Message";
 import Header from "../../../components/header";
 import Button from "../../../components/button";
-import compose from "../../../assets/icons/compose.png"
-import profile from "../../../assets/icons/profilepic.png";
-import searchicon from "../../../assets/icons/search.png";
-import groupProfile from "../../../assets/icons/groupProfile.png";
+import * as Icons from "../../../assets/icons"
 
 const HEADER_HEIGHT = 60;
 
@@ -29,7 +27,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     <Message
       name={item.name}
       content={item.lastMessage}
-      profilePic={groupProfile}
+      profilePic={Icons.groupProfile}
       navigation={navigation}
       route={{ params: { currentRoom: item.name, id: item.id }}}
     />
@@ -42,13 +40,13 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={global.container}>
         <Header
           leftComponent={
             <>
               <Button
                 onPress={() => navigation.navigate("ProfileScreen")}
-                imgSource={profile}
+                imgSource={Icons.profile}
                 style={styles.iconContainer}
                 imgStyle={styles.profileImage}
               />
@@ -74,7 +72,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
           ListHeaderComponent={
             <Animated.View style={{ transform: [{ translateY: searchBarPosition }] }}>
               <View style={styles.searchBar}>
-                <Image source={searchicon} style={styles.searchIcon} />
+                <Image source={Icons.search} style={styles.searchIcon} />
                 <TextInput
                   placeholder="Jump to..."
                   value={search}
@@ -90,7 +88,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       <Button
         onPress={() => navigation.navigate("AddChat")}
         style={styles.addGroupButton}
-        imgSource={compose}
+        imgSource={Icons.compose}
         imgStyle={styles.addGroupIcon}
       />
     </View>
@@ -98,10 +96,6 @@ const ChatList = ({ navigation }: { navigation: any }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
   iconContainer: {
     width: 45,
     height: 45,
@@ -136,8 +130,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "black",
-    marginBottom: 10,
-    marginLeft: 10,
+    textAlign: "center",
+    margin: 15,
   },
   addGroupButton: {
     position: "absolute",
