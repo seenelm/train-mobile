@@ -1,3 +1,5 @@
+![Logo](./assets/icons/logo.png)
+
 🚀 Train Setup and Run Instructions
 
 Welcome to the train app! Follow the steps below to get started. 🎉
