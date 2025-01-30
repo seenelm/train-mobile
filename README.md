@@ -1,4 +1,4 @@
-(![Logo](https://github.com/username/repo-name/blob/main/assets/logo.png?raw=true)
+![Logo](https://github.com/username/repo-name/blob/main/assets/logo.png?raw=true)
 
 🚀 Train Setup and Run Instructions
 
