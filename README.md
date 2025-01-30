@@ -1,4 +1,4 @@
-![Logo]([https://github.com/seenelm/train-mobile/blob/main/src/assets/icons/logo.png?raw=true])
+![Logo](https://github.com/seenelm/train-mobile/blob/main/src/assets/icons/logo.png?raw=true)
 
 🚀 Train Setup and Run Instructions
 
