@@ -1,4 +1,5 @@
-![Logo](https://github.com/seenelm/train-web/blob/main/src/assets/icons/logo.svg?raw=true)
+<img src="https://github.com/seenelm/train-web/blob/main/src/assets/icons/logo.svg?raw=true" alt="Logo" width="150">
+
 
 🚀 Train Setup and Run Instructions
 
