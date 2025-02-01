@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, Fragment, useMemo } from "react";
 import {View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, runOnJS, interpolate, Extrapolate } from "react-native-reanimated";
-import { daysOfWeek, getMonthName, getCurrentWeek, getAllWeeksInYear } from "./dateUtils";
+import { daysOfWeek, getMonthName, getCurrentWeek, getAllWeeksInYear } from "../utils/dateUtils";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Button from "../../../components/button";
 import profile from "../../../assets/icons/profilepic.png";

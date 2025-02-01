@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from "../../../navigation/AuthStack";
 import Button from "../../../components/button";
 import SlopedView from "../components/SlopedView";
-import * as Icons from "../../../assets/icons"
+import * as Icons from "../../../assets/icons" //TODO: add @ sign in the package.json @assets/icons
 
 const { height } = Dimensions.get("window");
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
