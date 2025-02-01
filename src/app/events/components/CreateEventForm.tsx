@@ -1,20 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
+import { FormProps } from "../types/inputs";
+import { CreateEventFormProps } from "../types/createEventFormProps";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Button from "../../../components/button";
 import Form from "../../../components/form";
-import { FormProps } from "../types/inputs";
-
-interface CreateEventFormProps {
-  onSubmit: (eventData: {
-    eventName: string;
-    eventDescription: string;
-    eventLocation: string;
-    eventDate: Date;
-    startTime: Date;
-    endTime: Date;
-  }) => void;
-}
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const [eventName, setEventName] = useState("");
