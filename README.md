@@ -1,4 +1,9 @@
-🚀 Train Setup and Run Instructions
+<p align="center">
+  <img src="https://github.com/seenelm/train-web/blob/main/src/assets/icons/logo.svg?raw=true" alt="Logo" width="150">
+</p>
+
+---
+
 
 Welcome to the train app! Follow the steps below to get started. 🎉
 
