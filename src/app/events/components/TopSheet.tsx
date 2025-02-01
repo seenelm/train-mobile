@@ -1,106 +1,34 @@
-import React, { useState, useEffect, useRef, useCallback, Fragment, useMemo } from "react";
-import {View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, runOnJS, interpolate, Extrapolate } from "react-native-reanimated";
-import { daysOfWeek, getMonthName, getCurrentWeek, getAllWeeksInYear } from "../utils/dateUtils";
+import React, { useCallback, Fragment, useMemo } from "react";
+import {View, Text, FlatList, StyleSheet } from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { daysOfWeek, getMonthName, getCurrentWeek } from "../utils/dateUtils";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Button from "../../../components/button";
 import profile from "../../../assets/icons/profilepic.png";
 import Header from "../../../components/header";
 import Week from "./Week";
-  
-const START_HEIGHT = Dimensions.get("window").height * 0.05;
-const END_HEIGHT = Dimensions.get("window").height * 0.24;
+import { useCalendarScroll } from "../hooks/useCalendarScroll";
+import { useCalendarGesture } from "../hooks/useCalendarGesture";
+import { CalendarGesture } from "../types/eventTypes";
 
 interface CalendarProps {}
 
 const TopSheet: React.FC<CalendarProps> = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [isScrollable, setIsScrollable] = useState<boolean>(false);
-  const panelHeight = useSharedValue<number>(START_HEIGHT);
-  const [viewMode, setViewMode] = useState<"week" | "month">("week");
-  const allWeeks = useMemo(() => getAllWeeksInYear(selectedDate.getFullYear()), [selectedDate]);
+  const { allWeeks, selectedDate, setSelectedDate, findCurrentWeekIndex, flatListRef } = useCalendarScroll();
+  const calendarGesture: CalendarGesture = useCalendarGesture();
 
-  const flatListRef = useRef<FlatList>(null);
-
-  const findCurrentWeekIndex = (weeks: Date[][]) => {
-    return weeks.findIndex((week) =>
-      week.some(
-        (d) =>
-          d.getFullYear() === selectedDate.getFullYear() &&
-          d.getMonth() === selectedDate.getMonth() &&
-          d.getDate() === selectedDate.getDate()
-      )
-    );
-  };
-
-  const scrollToSelectedWeek = useCallback(
-    (weeks: Date[][]) => {
-      const index = findCurrentWeekIndex(weeks);
-      if (index !== -1 && flatListRef.current) {
-        flatListRef.current.scrollToIndex({
-          index,
-          animated: true,
-          viewPosition: 0,
-        });
-      }
-    },
-    [findCurrentWeekIndex]
-  );
-
-  useEffect(() => {
-      scrollToSelectedWeek(allWeeks);
-    }, [allWeeks, scrollToSelectedWeek]);
   const initialScrollIndex = useMemo(() => findCurrentWeekIndex(allWeeks), [allWeeks]);
 
   const onSelectDate = useCallback((date: Date) => {
     setSelectedDate(date);
   }, []);
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_: any, ctx: { startHeight: number }) => {
-      ctx.startHeight = panelHeight.value;
-    },
-    onActive: (event: any, ctx: { startHeight: number }) => {
-      let newHeight = ctx.startHeight + event.translationY;
-      newHeight = Math.max(START_HEIGHT, newHeight);
-      newHeight = Math.min(END_HEIGHT, newHeight);
-      panelHeight.value = interpolate(
-        newHeight,
-        [START_HEIGHT, END_HEIGHT],
-        [START_HEIGHT, END_HEIGHT],
-        Extrapolate.CLAMP
-      );
-
-      if (!isScrollable) {
-        runOnJS(setIsScrollable)(true);
-        runOnJS(setViewMode)("month");
-      }
-    },
-    onEnd: (_: any) => {
-      if (_.velocityY >= 0) {
-        panelHeight.value = withSpring(END_HEIGHT, {
-          damping: 20,
-          stiffness: 100,
-        });
-      } else {
-        panelHeight.value = withSpring(START_HEIGHT, {
-          damping: 20,
-          stiffness: 100,
-        });
-        if (isScrollable) {
-          runOnJS(setIsScrollable)(false);
-          runOnJS(setViewMode)("week");
-        }
-      }
-    },
-  });
-
   const animatedContainerStyles = useAnimatedStyle(() => ({
-    height: panelHeight.value + 150,
+    height: calendarGesture.panelHeight.value + 150,
   }));
 
   const animatedPanelStyles = useAnimatedStyle(() => ({
-    height: panelHeight.value,
+    height: calendarGesture.panelHeight.value,
   }));
 
   return (
@@ -129,11 +57,11 @@ const TopSheet: React.FC<CalendarProps> = () => {
           ))}
         </View>
 
-        <PanGestureHandler onGestureEvent={gestureHandler}>
+        <PanGestureHandler onGestureEvent={calendarGesture.gestureHandler}>
           <Animated.View style={[styles.panel, animatedPanelStyles]}>
             <View style={styles.dragHandle} />
             <View style={styles.containerCal}>
-              {viewMode === "month" ? (
+              {calendarGesture.viewMode === "month" ? (
                 <FlatList
                   ref={flatListRef}
                   data={allWeeks}
@@ -145,7 +73,7 @@ const TopSheet: React.FC<CalendarProps> = () => {
                     />
                   )}
                   keyExtractor={(item, index) => index.toString()}
-                  scrollEnabled={isScrollable}
+                  scrollEnabled={calendarGesture.isScrollable}
                   initialScrollIndex={initialScrollIndex}
                   getItemLayout={(data, index) => ({
                     length: 40,
