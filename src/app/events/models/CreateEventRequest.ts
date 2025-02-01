@@ -1,10 +1,7 @@
-import { ObjectId } from 'mongodb';
-
 export interface CreateEventRequest {
     name: string;
-    admin: ObjectId[];
-    invitees: ObjectId[];
-    date: Date;
+    admin: string[];
+    invitees: string[];
     startTime: Date;
     endTime: Date;
     location?: string;

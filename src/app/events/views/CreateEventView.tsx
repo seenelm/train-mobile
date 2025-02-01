@@ -8,17 +8,9 @@ import { CreateEventRequest } from "../models/createEventRequest";
 const CreateEventView: React.FC = () => {
 
   const safeAreaEdges: Edge[] = ['top', 'left', 'right'];
-  
-  const handleSubmit = (eventData: {
-    eventName: string;
-    eventDescription: string;
-    eventLocation: string;
-    eventDate: Date;
-    startTime: Date;
-    endTime: Date;
-  }) => { 
-
-    // createEvent(eventData); 
+  const { mutate: createEvent, isLoading, error } = useCreateEvent();
+  const handleSubmit = (eventData: CreateEventRequest) => { 
+    createEvent(eventData); 
   };
 
   return (
