@@ -1,9 +1,7 @@
-import { ObjectId } from "mongodb";
 import { api } from "../../../services/api";
-import { CreateEventRequest } from "../models/createEventRequest";
-import { CreateEventResponse } from "../models/createEventResponse";
+import { EventRequest, EventResponse, UserEventResponse } from "../models/eventModel";
 
-export const createEvent = async (createEventRequest: CreateEventRequest): Promise<CreateEventResponse> => {
+export const createEvent = async (createEventRequest: EventRequest): Promise<EventResponse> => {
   try {
     return await api.post("/events/", createEventRequest);
   } catch (error) {
@@ -12,7 +10,7 @@ export const createEvent = async (createEventRequest: CreateEventRequest): Promi
   }
 };
 
-export const getUserEvents = async (userId: string) => {
+export const getUserEvents = async (userId: string): Promise<UserEventResponse[]> => {
   try {
     const response = await api.get(`/events/users/${userId}`);
     return response.data;

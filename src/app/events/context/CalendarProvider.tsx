@@ -20,7 +20,7 @@ export const useCalendarContext = () => {
 }
 
 export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     return(
         <CalendarContext.Provider value ={{selectedDate, setSelectedDate}}>

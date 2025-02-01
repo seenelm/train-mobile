@@ -4,7 +4,6 @@ import { getAllWeeksInYear } from "../utils/dateUtils";
 import { useCalendarContext } from "../context/CalendarProvider";
 
 export const useCalendarScroll = () => {
-    // const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const { selectedDate, setSelectedDate } = useCalendarContext();
     const flatListRef = useRef<FlatList>(null);
     const allWeeks = useMemo(() => getAllWeeksInYear(selectedDate.getFullYear()), [selectedDate]);

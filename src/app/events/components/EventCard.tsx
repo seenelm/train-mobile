@@ -2,26 +2,33 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-
-type EventType = {
-  _id: string;
-  name: string;
-  date: string;
-};
+import { EventResponse } from "../models/eventModel";
 
 type EventCardProps = {
   item: {
     image?: any;
-    event: EventType;
+    event: EventResponse;
   };
 };
 
-type RootStackParamList = { EventOverview: { event: EventType };};
+type RootStackParamList = { EventOverview: { event: EventResponse };};
 
 type EventOverviewScreenNavigationProp = StackNavigationProp< RootStackParamList, "EventOverview" >;
 
+
+const formatTime = (date: string | Date): string => {
+  const parsedDate = date instanceof Date ? date : new Date(date);
+  return parsedDate.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+};
+
+
 const EventCard = ({ item }: EventCardProps) => {
   const navigation = useNavigation<EventOverviewScreenNavigationProp>();
+  
   const handlePress = () => {
     navigation.navigate("EventOverview", { event: item.event });
   };
@@ -30,7 +37,8 @@ const EventCard = ({ item }: EventCardProps) => {
       {item.image && <Image source={item.image} style={styles.eventImage} />}
       <View>
         <Text style={styles.eventTitle}>{item.event.name}</Text>
-        <Text style={styles.eventDate}>{item.event.date}</Text>
+        <Text style={styles.eventDate}>{formatTime(item.event.startTime)}</Text>
+        <Text style={styles.eventDate}>{formatTime(item.event.endTime)}</Text>
       </View>
     </TouchableOpacity>
   );
