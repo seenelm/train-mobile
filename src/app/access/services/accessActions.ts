@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
 import { loginRequest } from "./accessServices";
-import { UserLoginRequest } from "../models/UserLoginRequest";
-import { UserLoginResponse } from "../models/UserLoginResponse";
+import { UserLoginRequest } from "../models/userLoginRequest";
+import { UserLoginResponse } from "../models/userLoginResponse";
 
 export const useLoginRequest = () => {
     const queryClient = useQueryClient();

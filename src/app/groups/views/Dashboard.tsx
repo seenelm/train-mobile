@@ -4,8 +4,8 @@ import Card from "../../../components/card";
 import Button from "../../../components/button";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../../../components/header";
-import { MainStackParamList } from "../../../navigation/types/MainStackParamList";
-import { DashboardProps } from "../types/DashboardProps";
+import { MainStackParamList } from "../../../navigation/types/mainStackParamList";
+import { DashboardProps } from "../types/dashboardProps";
 
 import profile from "../../../assets/icons/profilepic.png"
 import logo from "../../../assets/icons/logo.png"

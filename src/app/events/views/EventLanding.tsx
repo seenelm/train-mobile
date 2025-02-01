@@ -1,33 +1,21 @@
 import React from "react";
-import { View, Text, Image, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import TopSheet from "../components/TopSheet";
-import Button from "../../../components/button";
-import addEvent from "../../../assets/icons/add.png";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../services/authSlice";
 import { useGetUserEvents } from "../services/eventActions";
-
-type NavigationProps = {
-  navigate: (screen: string) => void;
-};
+import { NavigationProps } from "../types/navigationProps";
+import TopSheet from "../components/TopSheet";
+import Button from "../../../components/button";
+import addEvent from "../../../assets/icons/add.png";
+import EventCard from "../components/EventCard";
 
 
 const EventLanding = () => {
   const userId = useSelector(selectUser) ?? "";
   const { data: events } = useGetUserEvents(userId);
   const navigation = useNavigation<NavigationProps>();
-
-  const renderEvent = ({ item }: { item: typeof events[0] }) => (
-    <View style={styles.eventCard}>
-      {item.image && <Image source={item.image} style={styles.eventImage} />}
-      <View>
-        <Text style={styles.eventTitle}>{item.event.name}</Text>
-        <Text style={styles.eventDate}>{item.event.date}</Text>
-      </View>
-    </View>
-  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -36,7 +24,7 @@ const EventLanding = () => {
         <View style={{ flex: 1}}>
           <FlatList
             data={events}
-            renderItem={renderEvent}
+            renderItem={({ item }) => <EventCard item={item} />}
             keyExtractor={(item) => item.event._id}
             contentContainerStyle={styles.eventList}
             showsVerticalScrollIndicator={false}
