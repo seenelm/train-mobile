@@ -1,4 +1,4 @@
-import { UserLoginRequest } from "../models/UserLoginRequest";
+import { UserLoginRequest } from "../models/userLoginRequest";
 import { signIn, setUsername, setIsSignedIn } from "../../../services/authSlice";
 import { SigningData } from "../types/signingData";
 import { HandleSigningParams } from "../types/handlingSigningParams";

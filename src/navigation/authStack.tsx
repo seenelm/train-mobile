@@ -1,10 +1,7 @@
 import React from "react";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 import Landing from "../app/access/views/LandingView";
-import Signing from "../app/access/views/SIgningView";
+import Signing from "../app/access/views/SigningView";
 
 export type AuthStackParamList = {
   Landing: undefined;

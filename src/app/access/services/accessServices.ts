@@ -1,6 +1,6 @@
 import { api } from "../../../services/api";
-import { UserLoginRequest } from "../models/UserLoginRequest";
-import { UserLoginResponse } from "../models/UserLoginResponse";
+import { UserLoginRequest } from "../models/userLoginRequest";
+import { UserLoginResponse } from "../models/userLoginResponse";
 
 export const loginRequest = async (userLoginRequest: UserLoginRequest): Promise<UserLoginResponse> => {
     try {

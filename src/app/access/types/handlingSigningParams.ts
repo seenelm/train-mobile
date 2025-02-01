@@ -1,5 +1,5 @@
 import { AppDispatch } from "../../../services/store";
-import { UserLoginRequest } from "../models/UserLoginRequest";
+import { UserLoginRequest } from "../models/userLoginRequest";
 
 export type HandleSigningParams = {
     isSignUp: boolean;
