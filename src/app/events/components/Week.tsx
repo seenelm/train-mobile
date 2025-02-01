@@ -7,6 +7,9 @@ interface WeekProps {
     selectedDate: Date;
     onSelectDate: (date: Date) => void;
   }
+const normalizeDate = (date: Date) => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
 
 const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate }) => (
     <View style={styles.weekContainer}>
@@ -32,7 +35,7 @@ const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate
               style={[
                 styles.dateText,
                 { color: dateColor },
-                date.getTime() === selectedDate.getTime() && styles.selectedDate,
+                normalizeDate(date).getTime() === normalizeDate(selectedDate).getTime() && styles.selectedDate,
               ]}
             >
               {date.getDate()}

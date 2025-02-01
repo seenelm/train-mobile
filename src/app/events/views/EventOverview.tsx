@@ -1,28 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-
-type Event = {
-  id: string;
-  name: string;
-  admin: string[];
-  invitees: string[];
-  date: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-  description: string;
-};
+import { EventResponse } from '../models/eventModel';
 
 const EventOverview: React.FC = () => {
   const route = useRoute();
-  const { event } = route.params as { event: Event };
-
+  const { event } = route.params as { event: EventResponse };
+  console.log("Admin", event.admin);
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Title & Date */}
       <Text style={styles.title}>{event.name}</Text>
-      <Text style={styles.date}>{event.date}</Text>
+      <Text style={styles.date}>{event.startTime}</Text>
 
       {/* Time */}
       <Text style={styles.time}>
