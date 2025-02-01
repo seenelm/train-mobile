@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type EventType = {
   _id: string;
@@ -14,15 +16,23 @@ type EventCardProps = {
   };
 };
 
+type RootStackParamList = { EventOverview: { event: EventType };};
+
+type EventOverviewScreenNavigationProp = StackNavigationProp< RootStackParamList, "EventOverview" >;
+
 const EventCard = ({ item }: EventCardProps) => {
+  const navigation = useNavigation<EventOverviewScreenNavigationProp>();
+  const handlePress = () => {
+    navigation.navigate("EventOverview", { event: item.event });
+  };
   return (
-    <View style={styles.eventCard}>
+    <TouchableOpacity style={styles.eventCard} onPress={handlePress}>
       {item.image && <Image source={item.image} style={styles.eventImage} />}
       <View>
         <Text style={styles.eventTitle}>{item.event.name}</Text>
         <Text style={styles.eventDate}>{item.event.date}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

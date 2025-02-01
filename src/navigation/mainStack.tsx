@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabs from './BottomTabs';
 import CreateEventView from '../app/events/views/CreateEventView';
 import ProfileView from '../app/profile/views/ProfileView';
+import EventOverview from '../app/events/views/EventOverview';
 
 import { MainStackParamList } from './types/mainStackParamList';
 
@@ -19,6 +20,7 @@ const MainStack = () => {
       >
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="CreateEvent" component={CreateEventView} />
+        <Stack.Screen name="EventOverview" component={EventOverview} />
         <Stack.Screen name="Profile" component={ProfileView} />
       </Stack.Navigator>
     );
