@@ -1,43 +1,33 @@
 import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../../services/authSlice";
-import { useGetUserEvents } from "../services/eventActions";
 import { NavigationProps } from "../types/navigationProps";
+import { EventList } from "../components/EventList";
 import TopSheet from "../components/TopSheet";
 import Button from "../../../components/button";
 import addEvent from "../../../assets/icons/add.png";
-import EventCard from "../components/EventCard";
+import { CalendarProvider } from "../context/CalendarProvider";
 
 
 const EventLanding = () => {
-  const userId = useSelector(selectUser) ?? "";
-  const { data: events } = useGetUserEvents(userId);
   const navigation = useNavigation<NavigationProps>();
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <TopSheet />
-        <View style={{ flex: 1}}>
-          <FlatList
-            data={events}
-            renderItem={({ item }) => <EventCard item={item} />}
-            keyExtractor={(item) => item.event._id}
-            contentContainerStyle={styles.eventList}
-            showsVerticalScrollIndicator={false}
+    <CalendarProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <TopSheet /> 
+          <EventList />
+          <Button
+            onPress={() => navigation.navigate('CreateEvent')}
+            imgSource={addEvent}
+            style={styles.addButton}
+            imgStyle={styles.addIcon}
           />
         </View>
-        <Button
-          onPress={() => navigation.navigate('CreateEvent')}
-          imgSource={addEvent}
-          style={styles.addButton}
-          imgStyle={styles.addIcon}
-        />
-      </View>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </CalendarProvider>
   );
 };
 
