@@ -4,7 +4,7 @@ import { global } from "../../../utils/global";
 import Message from "../components/Message";
 import Header from "../../../components/header";
 import Button from "../../../components/button";
-import * as Icons from "../../../assets/icons"
+import * as Icons from "../../../assets/icons";
 
 const HEADER_HEIGHT = 60;
 
@@ -12,7 +12,6 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   const [search, setSearch] = useState("");
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  // Dummy data
   const conversations = [
     { id: "1", name: "Family Group", lastMessage: "See you tomorrow!" },
     { id: "2", name: "Work Team", lastMessage: "Project update..." },

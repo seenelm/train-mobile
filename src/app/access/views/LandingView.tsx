@@ -1,109 +1,32 @@
-import React, { useEffect, useRef, ReactNode } from "react";
-import {
-  View,
-  Animated,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
-import Svg, { Path } from "react-native-svg";
-import GoogleIcon from "../../../assets/icons/googleicon.png";
-import FacebookIcon from "../../../assets/icons/facebookicon.png";
-import AppleIcon from "../../../assets/icons/appleicon.png";
-import Button from "../../../components/button";
-import Graphic from "../../../assets/icons/graphic.png";
+import React from "react";
+import { View, Animated, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import { useFadeIn, useTranslateY } from "../utils/animations";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from "../../../navigation/authStack";
-
+import Button from "../../../components/button";
+import SlopedView from "../components/SlopedView";
+import * as Icons from "../../../assets/icons"
 
 const { height } = Dimensions.get("window");
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const baseDimension = Math.min(screenWidth, screenHeight);
 
-interface SlopedViewProps {
-    children: ReactNode;
-  }
-
 const Landing: React.FC = () => {
   type NavigationProp = StackNavigationProp<AuthStackParamList, 'Landing'>;
   const navigation = useNavigation<NavigationProp>();
-  const textOpacity = useRef(new Animated.Value(0)).current;
-  const buttonOpacity = useRef(new Animated.Value(0)).current;
-  const textTranslateY = useRef(new Animated.Value(height / 4)).current;
-  const buttonTranslateY = useRef(new Animated.Value(height / 4)).current;
-
-  useEffect(() => {
-    Animated.timing(textOpacity, {
-      toValue: 1,
-      duration: 2500,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(buttonOpacity, {
-      toValue: 1,
-      duration: 2500,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(textTranslateY, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(buttonTranslateY, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  const translateY = useRef(new Animated.Value(-100)).current;
-
-  useEffect(() => {
-    Animated.timing(translateY, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  const SlopedView: React.FC<SlopedViewProps> = ({ children }) => {
-    const screenWidth = Dimensions.get("window").width;
-  
-    return (
-      <Animated.View
-        style={{
-          overflow: "hidden",
-          width: "100%",
-          position: "absolute",
-          bottom: 0,
-          zIndex: 1,
-          transform: [{ translateY }],
-        }}
-      >
-        <Svg height="50" width={screenWidth}>
-          <Path
-            d={`M0,40 Q${screenWidth / 2},50 ${screenWidth},10 L${screenWidth},50 L0,50`}
-            fill="#FBFBFB"
-          />
-        </Svg>
-        <View style={{ backgroundColor: "#FBFBFB", alignItems: "center" }}>
-          {children}
-        </View>
-      </Animated.View>
-    );
-  };
+  const textOpacity = useFadeIn(2500);
+  const buttonOpacity = useFadeIn(2500);
+  const textTranslateY = useTranslateY(height / 4, 0, 1000);
+  const buttonTranslateY = useTranslateY(height / 4, 0, 1000);
+  const slopedViewTranslateY = useTranslateY(-100, 0, 1000);
 
   return (
     <View style={styles.container}>
       <View style={styles.graphicContainer}>
-        <Image source={Graphic} style={styles.graphic} />
+        <Image source={Icons.graphic} style={styles.graphic} />
       </View>
-      <SlopedView>
+      <SlopedView translateY={slopedViewTranslateY}>
         <Animated.View
           style={[
             styles.textContainer,
@@ -147,13 +70,13 @@ const Landing: React.FC = () => {
         </Animated.View>
         <View style={styles.iconContainer}>
           <TouchableOpacity onPress={() => {}}>
-            <Image source={AppleIcon} style={styles.icon} />
+            <Image source={Icons.appleicon} style={styles.icon} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {}}>
-            <Image source={GoogleIcon} style={styles.icon} />
+            <Image source={Icons.googleicon} style={styles.icon} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {}}>
-            <Image source={FacebookIcon} style={styles.icon} />
+            <Image source={Icons.facebookicon} style={styles.icon} />
           </TouchableOpacity>
         </View>
       </SlopedView>
