@@ -9,3 +9,7 @@ export { default as groupFocused } from "./group-focus.png";
 export { default as calendar } from "./calendar.png";
 export { default as calendarFocused } from "./calendar-focus.png";
 export { default as bell } from "./bell.webp";
+export { default as googleicon } from "./googleicon.png";
+export { default as facebookicon } from "./facebookicon.png";
+export { default as appleicon } from "./appleicon.png";
+export { default as graphic } from "./graphic.png";
