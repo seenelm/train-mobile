@@ -7,7 +7,7 @@ import { CreateEventFormProps } from "../types/eventTypes";
 import { Event } from "../types/eventTypes";
 import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
-import EventUtil from "../utils/eventUtil";
+import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {

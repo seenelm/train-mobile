@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { createEvent, getUserEvents } from "./eventServices";
-import { CreateEventRequest } from "../models/createEventRequest";
-import { CreateEventResponse } from "../models/createEventResponse";
+import { EventRequest } from "../models/eventModel";
+import { EventResponse } from "../models/eventModel";
 import { ObjectId } from "mongodb";
 
 export const useCreateEvent = () => {
     const queryClient = useQueryClient();
   
     return useMutation({
-      mutationFn: (createEventRequest: CreateEventRequest): Promise<CreateEventResponse> => createEvent(createEventRequest),
+      mutationFn: (createEventRequest: EventRequest): Promise<EventResponse> => createEvent(createEventRequest),
       onSuccess: () => {
         queryClient.invalidateQueries(["userEvents"]);
       },
