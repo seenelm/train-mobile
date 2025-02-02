@@ -2,13 +2,13 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import { EventInputFormProps } from "../types/eventTypes";
 
-const EventInput: React.FC<EventInputFormProps> = ({ placeholder, value, onChangeText, style, ...props }) => {
+const EventInput: React.FC<EventInputFormProps> = ({ placeholder, value, onChangeText, style}) => {
   return (
     <TextInput
       placeholder={placeholder}
       value={value}
       onChangeText={onChangeText}
-      style={[styles.input, style]} {...props}
+      style={[styles.input, style]}
     />
   );
 };
