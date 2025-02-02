@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, Text, TouchableOpacity, Image, Dimensions }
 import { useFadeIn, useTranslateY } from "../utils/animations";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AuthStackParamList } from "../../../navigation/AuthStack1";
+import { AuthStackParamList } from "../../../navigation/AuthStack";
 import Button from "../../../components/button";
 import SlopedView from "../components/SlopedView";
 import * as Icons from "../../../assets/icons" //TODO: add @ sign in the package.json @assets/icons
