@@ -13,3 +13,5 @@ export { default as googleicon } from "./googleicon.png";
 export { default as facebookicon } from "./facebookicon.png";
 export { default as appleicon } from "./appleicon.png";
 export { default as graphic } from "./graphic.png";
+export { default as time } from "./time.png";
+export { default as location } from "./location.png";

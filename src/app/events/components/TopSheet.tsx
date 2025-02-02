@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "black",
-
   },
   dayContainer: {
     flexDirection: "row",
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   dayText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     color: "black",
   },

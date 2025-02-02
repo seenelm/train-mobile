@@ -55,7 +55,7 @@ const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate
         marginTop: -10,
     },
     dateText: {
-        fontSize: 20,
+        fontSize: 16,
         color: "black",
         height: 25,
     },
