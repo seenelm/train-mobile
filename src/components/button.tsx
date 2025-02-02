@@ -1,14 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, Image, StyleSheet } from "react-native";
-
-interface ButtonProps {
-  onPress?: () => void;
-  children?: any;
-  imgSource?: any;
-  imgStyle?: any;
-  style?: any;
-  textStyle?: any;
-}
+import { ButtonProps } from "./types/globalTypes";
 
 const Button = (props: ButtonProps) => {
   return (

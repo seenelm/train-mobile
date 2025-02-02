@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
-import SubmitButton from "./SubmitButton";
-import { CreateEventFormProps } from "../types/createEventFormProps";
-import { CreateEventRequest } from "../models/createEventRequest";
-import { Event, fromEvent } from "../types/eventTypes";
+import Button from "../../../components/button";
+import { CreateEventFormProps } from "../types/eventTypes";
+import { Event } from "../types/eventTypes";
 import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
-import EventUtil from "../utils/EventUtil";
+import EventUtil from "../utils/eventUtil";
+import { EventRequest, fromEvent } from "../models/eventModel";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const userId = useSelector(selectUser);
@@ -31,7 +31,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    const createEventRequest: CreateEventRequest = fromEvent(event);
+    const createEventRequest: EventRequest = fromEvent(event);
     onSubmit(createEventRequest);
   };
 
@@ -73,7 +73,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
       />
     </View>
 
-      <SubmitButton onPress={handleSubmit} text="Save Event" />
+      <Button onPress={handleSubmit}>Save Event</Button>
     </View>
   );
 };

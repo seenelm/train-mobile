@@ -1,7 +1,8 @@
-import { CreateEventRequest } from "../models/createEventRequest";
 import { SharedValue } from "react-native-reanimated";
+import { EventRequest } from "../models/eventModel";
+import { TextStyle } from "react-native";
 
-// Event data models (userState)
+// EVENT USER STATE
 export interface Event {
     name: string;
     admin: string[];
@@ -12,9 +13,11 @@ export interface Event {
     description: string;
 }
 
-// Custom Hook types
+/******************************************************************** */
 
-// CALENDAR GESTURE
+// CUSTOM HOOK TYPES
+
+// Calendar Gesture
 export interface CalendarGesture {
     gestureHandler: any;
     viewMode: string;
@@ -32,15 +35,24 @@ export const fromCalendarGestureHook = (gestureHandler: any, viewMode: string, i
     return calendarGesture;
 }
 
-// Conversion methods
-export const fromEvent = (event: Event): CreateEventRequest => {
-    const createEventRequest: CreateEventRequest = {
-        name: event.name,
-        admin: event.admin,
-        invitees: event.invitees,
-        startTime: event.startTime,
-        endTime: event.endTime,
-        location: event.location
-    }
-    return createEventRequest;
+/******************************************************************** */
+
+// COMPONENT TYPES
+export interface WeekProps {
+    week: Date[];
+    selectedDate: Date;
+    onSelectDate: (date: Date) => void;
 }
+
+export interface CreateEventFormProps {
+    onSubmit: (createEventRequest: EventRequest) => void;
+}
+
+export interface EventInputFormProps {
+    placeholder: string;
+    value: string;
+    onChangeText: (text: string) => void;
+    style?: TextStyle; // Optional, only for inputs like the description
+  }
+
+/******************************************************************** */

@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { NavigationProps } from "../types/navigationProps";
+import { NavigationProps } from "../../../navigation/types/navigationTypes";
 import { EventList } from "../components/EventList";
 import TopSheet from "../components/TopSheet";
 import Button from "../../../components/button";

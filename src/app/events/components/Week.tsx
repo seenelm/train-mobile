@@ -1,15 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-
-
-interface WeekProps {
-    week: Date[];
-    selectedDate: Date;
-    onSelectDate: (date: Date) => void;
-  }
-const normalizeDate = (date: Date) => {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-};
+import EventUtil from "../utils/eventUtil";
+import { WeekProps } from "../types/eventTypes";
 
 const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate }) => (
     <View style={styles.weekContainer}>
@@ -35,7 +27,7 @@ const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate
               style={[
                 styles.dateText,
                 { color: dateColor },
-                normalizeDate(date).getTime() === normalizeDate(selectedDate).getTime() && styles.selectedDate,
+                EventUtil.normalizeDate(date).getTime() === EventUtil.normalizeDate(selectedDate).getTime() && styles.selectedDate,
               ]}
             >
               {date.getDate()}
