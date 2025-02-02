@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
 import Button from "../../../components/button";
@@ -38,22 +38,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Create an Event</Text>
       <EventInput
         placeholder="Event Name"
         value={event.name}
         onChangeText={(text) => handleEvent("name", text)}
       />
-      <EventInput
-        placeholder="Event Description"
-        value={event.description}
-        onChangeText={(text) => handleEvent("description", text)}
-      />
-      <EventInput
-        placeholder="Event Location"
-        value={event.location}
-        onChangeText={(text) => handleEvent("location", text)}
-      />
-
       {/* Start Date/Time, End Time, and End Date (if shown) in the same row */}
       <View style={styles.row}>
         <View style={styles.quarterWidth}>
@@ -124,6 +114,18 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
 
         
       </View>
+      <EventInput
+        placeholder="Event Description"
+        value={event.description}
+        onChangeText={(text) => handleEvent("description", text)}
+      />
+      <EventInput
+        placeholder="Event Location"
+        value={event.location}
+        onChangeText={(text) => handleEvent("location", text)}
+      />
+
+      
 
       {/* Add/Remove End Date Button */}
       <Button
@@ -139,7 +141,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         {showEndDate ? "Remove End Date" : "+ End Date"}
       </Button>
 
-      <Button onPress={handleSubmit}>Save Event</Button>
+      <Button onPress={handleSubmit} style={styles.save}>Save Event</Button>
     </View>
   );
 };
@@ -147,6 +149,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+  },
+  title: {
+    alignSelf: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    margin: 10,
   },
   row: {
     flexDirection: "row",
@@ -174,6 +182,10 @@ const styles = StyleSheet.create({
     color: "black",
     alignSelf: "flex-start",
     marginLeft: 10,
+  },
+  save: {
+    borderRadius: 5,
+    margin: 10,
   }
 });
 
