@@ -3,7 +3,7 @@ import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NavigationContainer, Theme, DarkTheme as NavigationDarkTheme, DefaultTheme } from "@react-navigation/native";
-import MainStack from "./src/navigation/MainStack1";
+import MainStack from "./src/navigation/MainStack";
 import AuthStack from "./src/navigation/AuthStack";
 import store, { persistor } from "./src/services/store";
 import { RootState } from "./src/services/store";
