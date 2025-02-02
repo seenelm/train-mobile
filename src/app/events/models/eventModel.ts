@@ -1,3 +1,4 @@
+import { Event } from "../types/eventTypes";
 
 export interface EventResponse {
     id: string;
@@ -18,6 +19,18 @@ export interface EventRequest {
     endTime: Date;
     location?: string;
     description?: string;
+}
+
+export const fromEvent = (event: Event): EventRequest => {
+    const createEventRequest: EventRequest = {
+        name: event.name,
+        admin: event.admin,
+        invitees: event.invitees,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: event.location
+    }
+    return createEventRequest;
 }
 
 export interface UserEventResponse {

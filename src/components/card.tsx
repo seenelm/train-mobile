@@ -1,13 +1,8 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import ContextMenu from "react-native-context-menu-view";
+import { CardProps } from "./types/globalTypes";
 
-interface CardProps {
-  imageUrl: string;
-  groupName: string;
-  groupId: Object;
-  onPress: TouchableOpacityProps['onPress'];
-}
 
 const Card: React.FC<CardProps> = ({ imageUrl, groupName, groupId, onPress }) => {
   return (

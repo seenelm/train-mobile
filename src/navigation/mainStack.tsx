@@ -5,7 +5,7 @@ import CreateEventView from '../app/events/views/CreateEventView';
 import ProfileView from '../app/profile/views/ProfileView';
 import EventOverview from '../app/events/views/EventOverview';
 
-import { MainStackParamList } from './types/mainStackParamList';
+import { MainStackParamList } from './types/navigationTypes';
 
 
 const Stack = createNativeStackNavigator<MainStackParamList>();

@@ -16,4 +16,8 @@ export default class EventUtil {
         console.log("Updated TimeStamp:", updatedDateTime);
         return updatedDateTime;
     };
+
+    static normalizeDate(date: Date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    };
 }
