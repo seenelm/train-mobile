@@ -33,6 +33,7 @@ const formatDate = (date: string | Date): string => {
   });
 };
 
+
 const formatEventDate = (startTime: string | Date, endTime: string | Date): string => {
   const startDate = startTime instanceof Date ? startTime : new Date(startTime);
   const endDate = endTime instanceof Date ? endTime : new Date(endTime);
@@ -61,7 +62,6 @@ const EventCard = ({ item }: EventCardProps) => {
         <Text style={styles.eventDate}>
           {formatEventDate(item.event.startTime, item.event.endTime)}
         </Text>
-        {/* Location */}
         <Text style={styles.eventLocation}>{item.event.location}</Text>
       </View>
     </TouchableOpacity>
