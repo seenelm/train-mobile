@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import EventUtil from "../utils/eventUtil";
+import EventUtil from "../utils/eventUtils";
 import { WeekProps } from "../types/eventTypes";
 
 const Week: React.FC<WeekProps> = React.memo(({ week, selectedDate, onSelectDate }) => (

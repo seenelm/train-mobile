@@ -10,6 +10,7 @@ export const EventList = () => {
     const { selectedDate, setSelectedDate } = useCalendarContext();
     const userId = useSelector(selectUser);
     const { data: events } = useGetUserEvents(userId);
+    console.log("Events", events);
     const animation = useRef(new Animated.Value(1)).current;
     const translateX = useRef(new Animated.Value(0)).current;
     const currentDateRef = useRef(selectedDate);
