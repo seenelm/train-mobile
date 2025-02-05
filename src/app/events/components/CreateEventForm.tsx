@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
 import Button from "../../../components/button";
@@ -9,6 +9,7 @@ import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
 import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
+import * as Icons from "../../../assets/icons";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const userId = useSelector(selectUser);
@@ -43,8 +44,13 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         placeholder="Event Name"
         value={event.name}
         onChangeText={(text) => handleEvent("name", text)}
+        hasButton={true}
       />
       {/* Start Date/Time, End Time, and End Date (if shown) in the same row */}
+
+      <View style={styles.dateRow}>
+        <Text style={styles.date}>Date</Text>
+      </View>
       <View style={styles.row}>
         <View style={styles.quarterWidth}>
           <DateTimePickerButton
@@ -58,24 +64,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
               }))
             }
             displayText={event.startTime.toLocaleDateString()}
+            textStyle={styles.datePickerText}
           />
         </View>
-        {showEndDate && (
-          <View style={styles.quarterWidth}>
-            <DateTimePickerButton
-              value={event.endTime}
-              mode="date"
-              onChange={(e, date) =>
-                date &&
-                setEvent((prev) => ({
-                  ...prev,
-                  endTime: EventUtil.updateDate(prev.endTime, date),
-                }))
-              }
-              displayText={event.endTime.toLocaleDateString()}
-            />
-          </View>
-        )}
+
+
+        <Text style={styles.timeText}>From</Text>
+
+        
+      
         <View style={styles.quarterWidth}>
           <DateTimePickerButton
             value={event.startTime}
@@ -87,13 +84,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
                 startTime: EventUtil.updateTime(prev.startTime, time),
               }))
             }
+            textStyle={styles.datePickerText}
             displayText={event.startTime.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}
+
           />
         </View>
-
+        <Text style={styles.timeText}>To</Text>
         <View style={styles.quarterWidth}>
           <DateTimePickerButton
             value={event.endTime}
@@ -105,41 +104,33 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
                 endTime: EventUtil.updateTime(prev.endTime, time),
               }))
             }
+            textStyle={styles.datePickerText}
             displayText={event.endTime.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}
           />
         </View>
-
-        
+        <Button imgSource={Icons.edit} imgStyle={styles.editImage} style={styles.editDate}/>
       </View>
+
       <EventInput
-        placeholder="Event Description"
-        value={event.description}
-        onChangeText={(text) => handleEvent("description", text)}
-      />
-      <EventInput
-        placeholder="Event Location"
+        placeholder="Add Location"
         value={event.location}
+        imgSrc={Icons.location}
+        imgStyle={styles.locationImg}
         onChangeText={(text) => handleEvent("location", text)}
       />
 
-      
-
-      {/* Add/Remove End Date Button */}
-      <Button
-        onPress={() => {
-          if (!showEndDate) {
-            setEvent((prev) => ({ ...prev, endTime: prev.startTime }));
-          }
-          setShowEndDate(!showEndDate);
-        }}
-        style={styles.addDate}
-        textStyle={styles.addDateText}
-      >
-        {showEndDate ? "Remove End Date" : "+ End Date"}
-      </Button>
+      <View style={styles.dateRow}>
+        <Text style={styles.date}>Add People</Text>
+      </View>
+      <EventInput 
+        placeholder="Search contacts"
+        imgSrc={Icons.search}
+        imgStyle={styles.searchImg}
+        onChangeText={() => {}}
+      /> 
 
       <Button onPress={handleSubmit} style={styles.save}>Save Event</Button>
     </View>
@@ -148,7 +139,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
+    display: "flex",
+    flexDirection: "column",
   },
   title: {
     alignSelf: "center",
@@ -156,36 +149,60 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     margin: 10,
   },
+  dateRow: {
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+  },
   row: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
+    marginHorizontal: 5,
+    marginRight: 10,
+  },
+  datePickerText: {
+    fontSize: 14,
+  },
+  date: {
+    marginTop: 10,
+    fontSize: 15,
+    fontWeight: "bold",
   },
   quarterWidth: {
-    flex: 1,
-    marginHorizontal: 5,
+    flex: 1, // Adjust this as needed
   },
   pickerContainer: {
     flex: 1,
     marginHorizontal: 5,
     alignItems: "center",
   },
-  pickerContainer1: {
-    flex: 1,
-    marginRight: 150,
-  },
-  addDate: {
-    backgroundColor: "transparent",
-    
-  },
-  addDateText: {
-    color: "black",
-    alignSelf: "flex-start",
-    marginLeft: 10,
+  timeText: {
+    alignSelf: "center",
+    marginHorizontal: 5,
   },
   save: {
     borderRadius: 5,
     margin: 10,
+  },
+  editImage: {
+    width: 20,
+    height: 20,
+  },
+  editDate: {
+    borderRadius: 5,
+    height: 40,
+    alignSelf: "center"
+  },
+  locationImg: {
+    width: 20, 
+    height: 20,
+  },
+  searchImg: {
+    width: 20,
+    height: 20,
   }
 });
 
