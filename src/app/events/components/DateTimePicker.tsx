@@ -45,17 +45,16 @@ const DateTimePickerButton: React.FC<DateTimePickerButtonProps> = ({ value, mode
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 5,
-    alignItems: "center", // Center the button horizontally
+    margin: 5,
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor: "#D9D9D980",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#000",
     fontSize: 16,
   },
   modalBackground: {
