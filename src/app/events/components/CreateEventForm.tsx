@@ -1,29 +1,18 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
 import Button from "../../../components/button";
 import { CreateEventFormProps } from "../types/eventTypes";
 import { Event } from "../types/eventTypes";
-import { selectUser } from "../../../services/authSlice";
-import { useSelector } from "react-redux";
 import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
+import { useEvent } from "../context/EventContext";
 import * as Icons from "../../../assets/icons";
+import AddDescriptionButton from "./AddDescriptionButton";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
-  const userId = useSelector(selectUser);
-  const [showEndDate, setShowEndDate] = useState(false);
-
-  const [event, setEvent] = useState<Event>({
-    name: "",
-    admin: [userId],
-    invitees: [],
-    startTime: new Date(),
-    endTime: new Date(),
-    location: "",
-    description: "",
-  });
+  const { event, setEvent } = useEvent();
 
   const handleEvent = (key: keyof Event, value: any) => {
     setEvent((prevEvent) => ({
