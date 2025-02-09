@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
 import { EventInputFormProps } from "../types/eventTypes";
-import Button from "../../../components/button";
+import AddDescriptionButton from "./AddDescriptionButton";
 
 const EventInput: React.FC<EventInputFormProps> = ({
   placeholder,
@@ -21,7 +21,7 @@ const EventInput: React.FC<EventInputFormProps> = ({
         style={[styles.input, style]}
       />
       {hasButton && (
-        <Button style={styles.button} textStyle={styles.buttonText}>Add Description</Button>
+        <AddDescriptionButton style={styles.button} textStyle={styles.buttonText}>Add Description</AddDescriptionButton>
       )}
       {imgSrc && <Image source={imgSrc} style={[styles.image, imgStyle]} />}
     </View>

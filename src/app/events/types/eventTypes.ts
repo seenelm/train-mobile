@@ -61,6 +61,14 @@ export interface EventInputFormProps {
   imgSrc?: ImageProps;
   imgStyle?: ImageStyle;
   hasButton?: boolean;
+  addDescriptionButton?: AddDescriptionButtonProps;
+}
+
+export interface AddDescriptionButtonProps {
+  onPress?: () => void;
+  style?: any;
+  textStyle?: any;
+  children?: any;
 }
 
 /******************************************************************** */

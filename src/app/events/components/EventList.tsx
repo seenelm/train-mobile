@@ -4,10 +4,10 @@ import EventCard from "./EventCard";
 import { useGetUserEvents } from "../services/eventActions";
 import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
-import { useCalendarContext } from "../context/CalendarProvider";
+import { useEventContext } from "../context/EventProvider";
 
 export const EventList = () => {
-    const { selectedDate, setSelectedDate } = useCalendarContext();
+    const { selectedDate, setSelectedDate } = useEventContext();
     const userId = useSelector(selectUser);
     const { data: events } = useGetUserEvents(userId);
     console.log("Events", events);

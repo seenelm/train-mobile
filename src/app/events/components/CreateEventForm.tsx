@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
 import * as Icons from "../../../assets/icons";
+import { useEventContext } from "../context/EventProvider";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const userId = useSelector(selectUser);
@@ -25,12 +26,19 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     description: "",
   });
 
-  const handleEvent = (key: keyof Event, value: any) => {
+  const updateEvent = (partialEvent: Partial<Event>) => {
     setEvent((prevEvent) => ({
-      ...prevEvent,
-      [key]: value,
+        ...prevEvent,
+        ...partialEvent,
     }));
-  };
+  }
+
+  // const handleEvent = (key: keyof Event, value: any) => {
+  //   setEvent((prevEvent) => ({
+  //     ...prevEvent,
+  //     [key]: value,
+  //   }));
+  // };
 
   const handleSubmit = () => {
     const createEventRequest: EventRequest = fromEvent(event);
@@ -43,7 +51,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
       <EventInput
         placeholder="Event Name"
         value={event.name}
-        onChangeText={(text) => handleEvent("name", text)}
+        onChangeText={(text) => updateEvent({ name: text })}
         hasButton={true}
       />
       {/* Start Date/Time, End Time, and End Date (if shown) in the same row */}
@@ -58,10 +66,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
             mode="date"
             onChange={(e, date) =>
               date &&
-              setEvent((prev) => ({
-                ...prev,
-                startTime: EventUtil.updateDate(prev.startTime, date),
-              }))
+              updateEvent({ startTime: EventUtil.updateDate(event.startTime, date)})
             }
             displayText={event.startTime.toLocaleDateString()}
             textStyle={styles.datePickerText}
@@ -79,10 +84,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
             mode="time"
             onChange={(e, time) =>
               time &&
-              setEvent((prev) => ({
-                ...prev,
-                startTime: EventUtil.updateTime(prev.startTime, time),
-              }))
+              updateEvent({ startTime: EventUtil.updateTime(event.startTime, time)})
             }
             textStyle={styles.datePickerText}
             displayText={event.startTime.toLocaleTimeString([], {
@@ -99,10 +101,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
             mode="time"
             onChange={(e, time) =>
               time &&
-              setEvent((prev) => ({
-                ...prev,
-                endTime: EventUtil.updateTime(prev.endTime, time),
-              }))
+              updateEvent({ endTime: EventUtil.updateTime(event.endTime, time)})
             }
             textStyle={styles.datePickerText}
             displayText={event.endTime.toLocaleTimeString([], {
@@ -119,7 +118,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         value={event.location}
         imgSrc={Icons.location}
         imgStyle={styles.locationImg}
-        onChangeText={(text) => handleEvent("location", text)}
+        onChangeText={(text) => updateEvent({ location: text })}
       />
 
       <View style={styles.dateRow}>
