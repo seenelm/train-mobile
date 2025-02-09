@@ -1,77 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { FlatList, StyleSheet, Animated, PanResponder } from "react-native";
 import EventCard from "./EventCard";
 import { useGetUserEvents } from "../services/eventActions";
 import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
 import { useEventContext } from "../context/EventProvider";
+import useEventList from "../hooks/useEventList";
 
 export const EventList = () => {
-    const { selectedDate, setSelectedDate } = useEventContext();
+    const { selectedDate } = useEventContext();
     const userId = useSelector(selectUser);
     const { data: events } = useGetUserEvents(userId);
-    console.log("Events", events);
-    const animation = useRef(new Animated.Value(1)).current;
-    const translateX = useRef(new Animated.Value(0)).current;
-    const currentDateRef = useRef(selectedDate);
 
-    // Always keep ref updated
-    useEffect(() => {
-        currentDateRef.current = selectedDate;
-    }, [selectedDate]);
-
-    // Animation setup
-    useEffect(() => {
-        const direction = selectedDate > currentDateRef.current ? -1 : 1;
-        
-        Animated.parallel([
-            Animated.timing(animation, {
-                toValue: 0,
-                duration: 200,
-                useNativeDriver: true,
-            }),
-            Animated.timing(translateX, {
-                toValue: 50 * direction,
-                duration: 200,
-                useNativeDriver: true,
-            }),
-        ]).start(() => {
-            Animated.parallel([
-                Animated.timing(animation, {
-                    toValue: 1,
-                    duration: 200,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(translateX, {
-                    toValue: 0,
-                    duration: 200,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        });
-    }, [selectedDate]);
-
-    // Pan responder with correct date reference
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gestureState) => {
-                return Math.abs(gestureState.dx) > 10;
-            },
-            onPanResponderRelease: (_, gestureState) => {
-                if (Math.abs(gestureState.dx) > 50 || Math.abs(gestureState.vx) > 0.3) {
-                    const baseDate = new Date(currentDateRef.current);
-                    
-                    if (gestureState.dx > 0) {
-                        baseDate.setDate(baseDate.getDate() - 1);
-                    } else {
-                        baseDate.setDate(baseDate.getDate() + 1);
-                    }
-                    
-                    setSelectedDate(baseDate);
-                }
-            },
-        })
-    ).current;
+    const { animation, translateX, panResponder } = useEventList();
 
     const normalizeDate = (date: Date) => 
         new Date(date.getFullYear(), date.getMonth(), date.getDate());

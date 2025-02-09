@@ -1,13 +1,15 @@
-import React, {
-  useEffect,
-  useCallback,
-  useState,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useEffect, useCallback, useRef, useMemo } from "react";
 import { FlatList } from "react-native";
 import { getAllWeeksInYear } from "../utils/dateUtils";
 import { useEventContext } from "../context/EventProvider";
+
+export interface CalendarScroll {
+  allWeeks: Date[][];
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
+  findCurrentWeekIndex: (weeks: Date[][]) => number;
+  flatListRef: React.RefObject<FlatList>;
+}
 
 export const useCalendarScroll = () => {
   const { selectedDate, setSelectedDate } = useEventContext();
@@ -17,7 +19,7 @@ export const useCalendarScroll = () => {
     [selectedDate]
   );
 
-  const findCurrentWeekIndex = (weeks: Date[][]) => {
+  const findCurrentWeekIndex = (weeks: Date[][]): number => {
     return weeks.findIndex((week) =>
       week.some(
         (d) =>
@@ -52,5 +54,5 @@ export const useCalendarScroll = () => {
     setSelectedDate,
     findCurrentWeekIndex,
     flatListRef,
-  };
+  } as CalendarScroll;
 };
