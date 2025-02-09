@@ -20,9 +20,7 @@ const EventInput: React.FC<EventInputFormProps> = ({
         onChangeText={onChangeText}
         style={[styles.input, style]}
       />
-      {hasButton && (
-        <AddDescriptionButton style={styles.button} textStyle={styles.buttonText}>Add Description</AddDescriptionButton>
-      )}
+      {hasButton && <AddDescriptionButton />}
       {imgSrc && <Image source={imgSrc} style={[styles.image, imgStyle]} />}
     </View>
   );
