@@ -13,7 +13,7 @@ import { SharedValue } from "react-native-reanimated";
 const START_HEIGHT = Dimensions.get("window").height * 0.05;
 const END_HEIGHT = Dimensions.get("window").height * 0.24;
 
-interface CalendarGesture {
+export interface CalendarGesture {
   gestureHandler: any;
   viewMode: string;
   isScrollable: boolean;

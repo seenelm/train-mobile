@@ -1,15 +1,15 @@
 import { useRef, useEffect } from "react";
 import { Animated, PanResponder } from "react-native";
-import { useEventContext } from "../context/EventProvider";
+import { useCalendarContext } from "../context/CalendarContext";
 
-export interface EventListHook {
+export interface EventListAnimation {
   animation: Animated.Value;
   translateX: Animated.Value;
   panResponder: any;
 }
 
-const useEventList = () => {
-  const { selectedDate, setSelectedDate } = useEventContext();
+const useEventListAnimation = () => {
+  const { selectedDate, setSelectedDate } = useCalendarContext();
 
   const animation = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
@@ -77,7 +77,7 @@ const useEventList = () => {
     animation,
     translateX,
     panResponder,
-  } as EventListHook;
+  } as EventListAnimation;
 };
 
-export default useEventList;
+export default useEventListAnimation;

@@ -7,14 +7,14 @@ import { EventList } from "../components/EventList";
 import TopSheet from "../components/TopSheet";
 import Button from "../../../components/button";
 import addEvent from "../../../assets/icons/add.png";
-import { EventProvider } from "../context/EventProvider";
+import { CalendarProvider } from "../context/CalendarContext";
 
 
 const EventLanding = () => {
   const navigation = useNavigation<NavigationProps>();
 
   return (
-    <EventProvider>
+    <CalendarProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           <TopSheet /> 
@@ -27,7 +27,7 @@ const EventLanding = () => {
           />
         </View>
       </GestureHandlerRootView>
-    </EventProvider>
+    </CalendarProvider>
   );
 };
 

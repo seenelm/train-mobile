@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useRef, useMemo } from "react";
 import { FlatList } from "react-native";
 import { getAllWeeksInYear } from "../utils/dateUtils";
-import { useEventContext } from "../context/EventProvider";
+import { useCalendarContext } from "../context/CalendarContext";
 
 export interface CalendarScroll {
   allWeeks: Date[][];
@@ -12,7 +12,7 @@ export interface CalendarScroll {
 }
 
 export const useCalendarScroll = () => {
-  const { selectedDate, setSelectedDate } = useEventContext();
+  const { selectedDate, setSelectedDate } = useCalendarContext();
   const flatListRef = useRef<FlatList>(null);
   const allWeeks = useMemo(
     () => getAllWeeksInYear(selectedDate.getFullYear()),

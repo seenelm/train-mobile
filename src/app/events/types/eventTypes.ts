@@ -15,33 +15,6 @@ export interface Event {
 
 /******************************************************************** */
 
-// CUSTOM HOOK TYPES
-
-// Calendar Gesture
-export interface CalendarGesture {
-  gestureHandler: any;
-  viewMode: string;
-  isScrollable: boolean;
-  panelHeight: SharedValue<number>;
-}
-
-export const fromCalendarGestureHook = (
-  gestureHandler: any,
-  viewMode: string,
-  isScrollable: boolean,
-  panelHeight: SharedValue<number>
-): CalendarGesture => {
-  const calendarGesture: CalendarGesture = {
-    gestureHandler,
-    viewMode,
-    isScrollable,
-    panelHeight,
-  };
-  return calendarGesture;
-};
-
-/******************************************************************** */
-
 // COMPONENT TYPES
 export interface WeekProps {
   week: Date[];
