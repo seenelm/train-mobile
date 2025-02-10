@@ -9,7 +9,6 @@ import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
 import { useEvent } from "../context/EventContext";
 import * as Icons from "../../../assets/icons";
-import AddDescriptionButton from "./AddDescriptionButton";
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const { event, setEvent } = useEvent();
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   datePickerText: {
-    fontSize: 14,
+    fontSize: 13,
   },
   date: {
     marginTop: 10,
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     alignSelf: "center",
-    marginHorizontal: 5,
+
   },
   save: {
     borderRadius: 5,

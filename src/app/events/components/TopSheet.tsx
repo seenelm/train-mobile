@@ -9,7 +9,7 @@ import Header from "../../../components/header";
 import Week from "./Week";
 import { useCalendarScroll } from "../hooks/useCalendarScroll";
 import { useCalendarGesture } from "../hooks/useCalendarGesture";
-import { CalendarGesture } from "../types/eventTypes";
+import { CalendarGesture } from "../hooks/useCalendarGesture";
 import { CalendarScroll } from "../hooks/useCalendarScroll";
 
 interface CalendarProps {}
