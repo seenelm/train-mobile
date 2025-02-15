@@ -1,4 +1,5 @@
 import { EventResponse } from "../app/events/models/eventModel";
+import { Event } from "../app/events/types/eventTypes";
 
 export const eventMocks: EventResponse[] = [
   {
@@ -32,3 +33,23 @@ export const eventMocks: EventResponse[] = [
     description: "Description 3",
   },
 ];
+
+// MOCK EventContext.tsx
+export const mockSetEvent = jest.fn();
+
+export const mockEvent: Event = {
+  name: "",
+  admin: ["1234"],
+  invitees: [],
+  startTime: new Date(),
+  endTime: new Date(),
+  location: "",
+  description: "",
+};
+
+export const mockEventContext = {
+  event: mockEvent,
+  setEvent: mockSetEvent,
+};
+
+export const useEvent = jest.fn(() => mockEventContext);

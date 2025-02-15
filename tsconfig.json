@@ -1,8 +1,8 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+    "rootDir": "."
+  },
+  // "include": ["src", "./jest.setup.ts"],
+  // "exclude": ["node_modules"]
 }
