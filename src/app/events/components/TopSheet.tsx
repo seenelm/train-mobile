@@ -9,18 +9,19 @@ import Header from "../../../components/header";
 import Week from "./Week";
 import { useCalendarScroll } from "../hooks/useCalendarScroll";
 import { useCalendarGesture } from "../hooks/useCalendarGesture";
-import { CalendarGesture } from "../types/eventTypes";
+import { CalendarGesture } from "../hooks/useCalendarGesture";
+import { CalendarScroll } from "../hooks/useCalendarScroll";
 
 interface CalendarProps {}
 
 const TopSheet: React.FC<CalendarProps> = () => {
-  const { allWeeks, selectedDate, setSelectedDate, findCurrentWeekIndex, flatListRef } = useCalendarScroll();
+  const calendarScroll: CalendarScroll = useCalendarScroll();
   const calendarGesture: CalendarGesture = useCalendarGesture();
 
-  const initialScrollIndex = useMemo(() => findCurrentWeekIndex(allWeeks), [allWeeks]);
+  const initialScrollIndex = useMemo(() => calendarScroll.findCurrentWeekIndex(calendarScroll.allWeeks), [calendarScroll.allWeeks]);
 
   const onSelectDate = useCallback((date: Date) => {
-    setSelectedDate(date);
+    calendarScroll.setSelectedDate(date);
   }, []);
 
   const animatedContainerStyles = useAnimatedStyle(() => ({
@@ -46,7 +47,7 @@ const TopSheet: React.FC<CalendarProps> = () => {
               
             </Fragment>
           }
-          middleComponent={<Text style={styles.monthText}>{getMonthName(selectedDate)}</Text>}
+          middleComponent={<Text style={styles.monthText}>{getMonthName(calendarScroll.selectedDate)}</Text>}
           rightComponent={null}
         />
         <View style={styles.dayContainer}>
@@ -63,12 +64,12 @@ const TopSheet: React.FC<CalendarProps> = () => {
             <View style={styles.containerCal}>
               {calendarGesture.viewMode === "month" ? (
                 <FlatList
-                  ref={flatListRef}
-                  data={allWeeks}
+                  ref={calendarScroll.flatListRef}
+                  data={calendarScroll.allWeeks}
                   renderItem={({ item }) => (
                     <Week
                       week={item}
-                      selectedDate={selectedDate}
+                      selectedDate={calendarScroll.selectedDate}
                       onSelectDate={onSelectDate}
                     />
                   )}
@@ -82,7 +83,7 @@ const TopSheet: React.FC<CalendarProps> = () => {
                   })}
                   onScrollToIndexFailed={(info) => {
                     setTimeout(() => {
-                      flatListRef.current?.scrollToIndex({
+                      calendarScroll.flatListRef.current?.scrollToIndex({
                         index: info.index,
                         animated: true,
                       });
@@ -91,8 +92,8 @@ const TopSheet: React.FC<CalendarProps> = () => {
                 />
               ) : (
                 <Week
-                  week={getCurrentWeek(selectedDate)}
-                  selectedDate={selectedDate}
+                  week={getCurrentWeek(calendarScroll.selectedDate)}
+                  selectedDate={calendarScroll.selectedDate}
                   onSelectDate={onSelectDate}
                 />
               )}
