@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     width: 40,
     height: 40,
+    padding: 5,
 
   },
   image: {
