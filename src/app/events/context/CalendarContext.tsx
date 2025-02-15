@@ -4,6 +4,7 @@ interface CalendarContextProps {
     selectedDate: Date;
     setSelectedDate: (date: Date) => void;
 }
+
 interface CalendarProviderProps {
     children: ReactNode;
 }
@@ -21,9 +22,15 @@ export const useCalendarContext = () => {
 
 export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    
+
+    const calendarContextProps: CalendarContextProps = {
+        selectedDate,
+        setSelectedDate,
+    };
 
     return(
-        <CalendarContext.Provider value ={{selectedDate, setSelectedDate}}>
+        <CalendarContext.Provider value ={calendarContextProps}>
             {children}
         </CalendarContext.Provider>
     )

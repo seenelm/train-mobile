@@ -1,7 +1,13 @@
 import { api } from "../../../services/api";
-import { EventRequest, EventResponse, UserEventResponse } from "../models/eventModel";
+import {
+  EventRequest,
+  EventResponse,
+  UserEventResponse,
+} from "../models/eventModel";
 
-export const createEvent = async (createEventRequest: EventRequest): Promise<EventResponse> => {
+export const createEvent = async (
+  createEventRequest: EventRequest
+): Promise<EventResponse> => {
   try {
     return await api.post("/events/", createEventRequest);
   } catch (error) {
@@ -10,13 +16,14 @@ export const createEvent = async (createEventRequest: EventRequest): Promise<Eve
   }
 };
 
-export const getUserEvents = async (userId: string): Promise<UserEventResponse[]> => {
+export const getUserEvents = async (
+  userId: string
+): Promise<UserEventResponse[]> => {
   try {
     const response = await api.get(`/events/users/${userId}`);
     return response.data;
-    
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user events:", error);
     throw error;
   }
 };

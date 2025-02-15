@@ -7,7 +7,7 @@ import { EventList } from "../components/EventList";
 import TopSheet from "../components/TopSheet";
 import Button from "../../../components/button";
 import addEvent from "../../../assets/icons/add.png";
-import { CalendarProvider } from "../context/CalendarProvider";
+import { CalendarProvider } from "../context/CalendarContext";
 
 
 const EventLanding = () => {
