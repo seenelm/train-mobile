@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     textAlign: "center",
-    margin: 15,
   },
   addGroupButton: {
     position: "absolute",
