@@ -42,6 +42,6 @@ export const EventList = () => {
 
 const styles = StyleSheet.create({
     eventList: {
-        padding: 20
+        padding: 10
     }
 });

@@ -44,29 +44,27 @@ const AddDescriptionButton: React.FC = () => {
         )}
       </TouchableOpacity>
 
-      {/* Modal for editing the description */}
       <Modal
         visible={isModalVisible}
-        animationType="slide"
-        transparent={true} // Use transparent background for an overlay effect
+        transparent={true}
       >
-        <View style={styles.modalOverlay}>
+        <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Add Description</Text>
             <TextInput
               style={styles.input}
               multiline
-              placeholder="Add a description"
+              placeholder="Add description for your event"
               value={tempDescription}
               onChangeText={setTempDescription}
+              autoFocus
             />
             <View style={styles.modalButtons}>
               <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-                {/* Uncomment if you want to use an icon */}
-                {/* <Icons.Check width={20} height={20} /> */}
-                <Text style={styles.saveButtonText}>Save</Text>
+                <Text style={styles.saveButtonText}>add description</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -101,27 +99,38 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: "#000",
   },
-  modalOverlay: {
+  modalBackground: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // semi-transparent background
-    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   modalContainer: {
+    marginTop: "20%",
+    backgroundColor: "white",
     width: "90%",
+    height: "50%",
     padding: 20,
-    backgroundColor: "#fff",
     borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+    alignSelf: "flex-start",
   },
   input: {
     width: "100%",
+    height: "70%",
     borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 8,
     padding: 12,
     minHeight: 100,
-    textAlignVertical: "top", // Ensures the text starts at the top of the TextInput
-    backgroundColor: "#fff",
+    textAlignVertical: "top", 
+    backgroundColor: "#F4F3F3",
   },
   modalButtons: {
     flexDirection: "row",
@@ -129,22 +138,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   cancelButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: "#e0e0e0",
+    padding: 18,
+    width: "30%",
+    borderRadius: 30,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    backgroundColor: "#FFFFFF",
     marginRight: 10,
+    alignItems: "center",
   },
   cancelButtonText: {
     color: "#000",
     fontWeight: "bold",
   },
   saveButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: "#e0e0e0",
+    padding: 18,
+    width: "60%",
+    borderRadius: 30,
+    backgroundColor: "#000000",
+    alignItems: "center",
   },
   saveButtonText: {
-    color: "#000",
+    color: "#FFFFFF",
     fontWeight: "bold",
   },
 });

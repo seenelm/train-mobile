@@ -108,7 +108,6 @@ const TopSheet: React.FC<CalendarProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    marginBottom: 13,
   },
   test: {
     backgroundColor: "transparent",

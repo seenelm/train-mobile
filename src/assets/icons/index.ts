@@ -16,3 +16,4 @@ export { default as graphic } from "./graphic.png";
 export { default as time } from "./time.png";
 export { default as location } from "./location.png";
 export { default as edit } from "./edit.webp";
+export { default as more } from "./more.png";

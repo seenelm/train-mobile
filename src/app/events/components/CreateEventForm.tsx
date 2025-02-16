@@ -20,13 +20,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     }));
   }
 
-  // const handleEvent = (key: keyof Event, value: any) => {
-  //   setEvent((prevEvent) => ({
-  //     ...prevEvent,
-  //     [key]: value,
-  //   }));
-  // };
-
   const handleSubmit = () => {
     const createEventRequest: EventRequest = fromEvent(event);
     onSubmit(createEventRequest);
@@ -97,7 +90,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
             })}
           />
         </View>
-        <Button imgSource={Icons.edit} imgStyle={styles.editImage} style={styles.editDate}/>
+        <Button imgSource={Icons.more} imgStyle={styles.editImage} style={styles.editDate}/>
       </View>
 
       <EventInput
@@ -118,7 +111,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         onChangeText={() => {}}
       /> 
 
-      <Button onPress={handleSubmit} style={styles.save}>Save Event</Button>
+      <Button onPress={handleSubmit} style={styles.save} textStyle={styles.saveText}>Create Event</Button>
     </View>
   );
 };
@@ -158,7 +151,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   quarterWidth: {
-    flex: 1, // Adjust this as needed
+    flex: 1,
   },
   pickerContainer: {
     flex: 1,
@@ -173,14 +166,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 10,
   },
+  saveText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   editImage: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
   },
   editDate: {
     borderRadius: 5,
     height: 40,
-    alignSelf: "center"
+    alignSelf: "center",
+    backgroundColor: "#D9D9D9",
   },
   locationImg: {
     width: 20, 
