@@ -13,8 +13,6 @@ import search from "../../../assets/icons/search.png"
 import bell from "../../../assets/icons/bell.webp"
 
 
-
-
 const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
   const cardData = [
     {
