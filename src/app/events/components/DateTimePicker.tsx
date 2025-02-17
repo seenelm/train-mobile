@@ -23,7 +23,7 @@ const DateTimePickerButton: React.FC<DateTimePickerButtonProps> = ({ value, mode
         <Text style={[styles.buttonText, textStyle]}>{displayText}</Text>
       </TouchableOpacity>
       {showPicker && (
-        <Modal transparent={true} animationType="fade">
+        <Modal transparent={true}>
           <View style={styles.modalBackground}>
             <View style={styles.pickerContainer}>
               <DateTimePicker
@@ -48,14 +48,17 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   button: {
-    backgroundColor: "#D9D9D980",
-    padding: 10,
+    backgroundColor: "#f5f5f5",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    paddingVertical: 20,
     borderRadius: 5,
     alignItems: "center",
   },
   buttonText: {
     color: "#000",
     fontSize: 16,
+    fontWeight: "bold"
   },
   modalBackground: {
     flex: 1,
