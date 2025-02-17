@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
   save: {
     borderRadius: 5,
     margin: 10,
+    paddingVertical: 20,
   },
   saveText: {
     fontSize: 16,
@@ -176,9 +177,11 @@ const styles = StyleSheet.create({
   },
   editDate: {
     borderRadius: 5,
-    height: 40,
+    paddingVertical: 13, 
     alignSelf: "center",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#f5f5f5",
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   locationImg: {
     width: 20, 

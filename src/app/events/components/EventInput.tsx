@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    padding: 15,
+    padding: 20,
     borderWidth: 0,
   },
   image: {
