@@ -6,11 +6,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../../../components/header";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
 import { DashboardProps } from "../types/dashboardProps";
-
+import * as Icons from "../../../assets/icons";
 import profile from "../../../assets/icons/profilepic.png"
 import logo from "../../../assets/icons/logo.png"
-import search from "../../../assets/icons/search.png"
-import bell from "../../../assets/icons/bell.webp"
+
 
 
 const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
@@ -45,7 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
       <Header
         leftComponent={
           <Button
-            onPress={() => nav("Profile")}
+            onPress={() => nav("SearchView")}
             imgSource={profile}
             style={styles.iconContainer}
             imgStyle={styles.profileImage}
@@ -57,13 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
             <Button
               onPress={() => {}}
               style={styles.iconContainer}
-              imgSource={bell}
-              imgStyle={styles.image}
-            />
-            <Button
-              onPress={() => {}}
-              style={styles.iconContainer}
-              imgSource={search}
+              imgSource={Icons.search}
               imgStyle={styles.image}
             />
           </>
@@ -97,11 +90,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   iconContainer: {
+    flex: 1,
     aspectRatio: 1,
     maxHeight: 45,
     maxWidth: 45,
     backgroundColor: "transparent",
+    marginBottom: 10,
   },
+
   profileImage: {
     width: 35,
     height: 35,

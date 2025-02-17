@@ -5,6 +5,7 @@ import CreateEventView from '../app/events/views/CreateEventView';
 import ProfileView from '../app/profile/views/ProfileView';
 import EventOverview from '../app/events/views/EventOverview';
 import ChatView from '../app/chat/views/ChatView';
+import SearchView from '../app/search/views/SearchView';
 
 import { MainStackParamList } from './types/navigationTypes';
 
@@ -24,6 +25,7 @@ const MainStack = () => {
         <Stack.Screen name="EventOverview" component={EventOverview} />
         <Stack.Screen name="Profile" component={ProfileView} />
         <Stack.Screen name="ChatView" component={ChatView} />
+        <Stack.Screen name="SearchView" component={SearchView} />
       </Stack.Navigator>
     );
   };
