@@ -11,12 +11,15 @@ import { useCalendarScroll } from "../hooks/useCalendarScroll";
 import { useCalendarGesture } from "../hooks/useCalendarGesture";
 import { CalendarGesture } from "../hooks/useCalendarGesture";
 import { CalendarScroll } from "../hooks/useCalendarScroll";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface CalendarProps {}
 
 const TopSheet: React.FC<CalendarProps> = () => {
   const calendarScroll: CalendarScroll = useCalendarScroll();
   const calendarGesture: CalendarGesture = useCalendarGesture();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const initialScrollIndex = useMemo(() => calendarScroll.findCurrentWeekIndex(calendarScroll.allWeeks), [calendarScroll.allWeeks]);
 
@@ -39,7 +42,7 @@ const TopSheet: React.FC<CalendarProps> = () => {
           leftComponent={
             <Fragment>
               <Button
-                onPress={() => {}}
+                onPress={() => navigation.navigate("Profile")}
                 imgSource={profile}
                 style={styles.iconContainer}
                 imgStyle={styles.profileImage}
