@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Text, View, TextInput, Animated, Image, StyleSheet } from "react-native";
 import { global } from "../../../utils/global";
-import Message from "../components/Message";
+import Chat from "../components/Chat";
 import Header from "../../../components/header";
 import Button from "../../../components/button";
 import * as Icons from "../../../assets/icons";
@@ -12,31 +12,11 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   const [search, setSearch] = useState("");
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const conversations = [
+  const chats = [
     { id: "1", name: "Family Group", lastMessage: "See you tomorrow!" },
     { id: "2", name: "Work Team", lastMessage: "Project update..." },
     { id: "3", name: "John Doe", lastMessage: "Thanks for the help!" },
   ];
-
-  const filteredConversations = conversations.filter(conv =>
-    conv.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const renderItem = ({ item }: { item: typeof conversations[0] }) => (
-    <Message
-      name={item.name}
-      content={item.lastMessage}
-      profilePic={Icons.groupProfile}
-      navigation={navigation}
-      route={{ params: { currentRoom: item.name, id: item.id }}}
-    />
-  );
-
-  const searchBarPosition = scrollY.interpolate({
-    inputRange: [0, HEADER_HEIGHT],
-    outputRange: [0, -HEADER_HEIGHT],
-    extrapolate: "clamp",
-  });
 
   return (
     <View style={global.container}>
@@ -44,7 +24,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
           leftComponent={
             <>
               <Button
-                onPress={() => navigation.navigate("ProfileScreen")}
+                onPress={() => navigation.navigate("Profile")}
                 imgSource={Icons.profile}
                 style={styles.iconContainer}
                 imgStyle={styles.profileImage}
@@ -58,31 +38,10 @@ const ChatList = ({ navigation }: { navigation: any }) => {
             </>
           }
         />
+
+        <Chat chats={chats} />
         
-        <Animated.FlatList
-          data={filteredConversations}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.messageContainer}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
-          ListHeaderComponent={
-            <Animated.View style={{ transform: [{ translateY: searchBarPosition }] }}>
-              <View style={styles.searchBar}>
-                <Image source={Icons.search} style={styles.searchIcon} />
-                <TextInput
-                  placeholder="Jump to..."
-                  value={search}
-                  onChangeText={setSearch}
-                  style={styles.input}
-                />
-              </View>
-            </Animated.View>
-          }
-          ListHeaderComponentStyle={styles.headerComponentStyle}
-        />
+       
 
       <Button
         onPress={() => navigation.navigate("AddChat")}
@@ -154,4 +113,12 @@ const styles = StyleSheet.create({
   },
 });
 
+/**
+ * The main screen for the chat app, shows a list of chats
+ * and a search bar to search for chats.
+ *
+ * @param {Object} props
+ * @param {StackNavigationProp} props.navigation
+ * @return {React.ReactElement}
+ */
 export default ChatList;

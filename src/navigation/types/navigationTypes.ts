@@ -1,10 +1,12 @@
+
 export type MainStackParamList = {
     BottomTabs: undefined;
     CreateEvent: undefined;
     EventOverview: undefined;
     Profile: undefined;
+    ChatView: undefined;
 };
 
 export type NavigationProps = {
-  navigate: (screen: string) => void;
+  navigate: (screen: keyof MainStackParamList) => void;
 };
