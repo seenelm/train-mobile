@@ -44,7 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
       <Header
         leftComponent={
           <Button
-            onPress={() => nav("SearchView")}
+            onPress={() => nav("Profile")}
             imgSource={profile}
             style={styles.iconContainer}
             imgStyle={styles.profileImage}
@@ -54,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
         rightComponent={
           <>
             <Button
-              onPress={() => {}}
+              onPress={() => nav("SearchView")}
               style={styles.iconContainer}
               imgSource={Icons.search}
               imgStyle={styles.image}
