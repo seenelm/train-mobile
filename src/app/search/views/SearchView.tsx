@@ -94,7 +94,7 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
       <View style={{ alignSelf: "stretch" }}>
         <FlatList
           contentContainerStyle={{ paddingLeft: 15 }}
-          data={data}
+          data={null}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
