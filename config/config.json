@@ -1,5 +1,6 @@
 {
   "apiUrl": "http://127.0.0.1:3000",
   "socketUrl": "http://127.0.0.1:3001",
-  "chatUrl": "http://127.0.0.1:3002"
+  "chatUrl": "http://127.0.0.1:3002",
+  "GOOGLE_MAPS_API_KEY": "inserApiKey"
 }
