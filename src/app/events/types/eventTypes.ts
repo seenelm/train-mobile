@@ -1,6 +1,8 @@
 import { SharedValue } from "react-native-reanimated";
 import { EventRequest } from "../models/eventModel";
 import { TextStyle, ImageProps, ImageStyle } from "react-native";
+import { MainStackParamList } from "../../../navigation/types/navigationTypes";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 // EVENT USER STATE
 export interface Event {
@@ -21,6 +23,12 @@ export interface WeekProps {
   selectedDate: Date;
   onSelectDate: (date: Date) => void;
 }
+
+// export interface CreateEventFormProps<
+//   T extends keyof MainStackParamList = keyof MainStackParamList
+// > extends NativeStackScreenProps<MainStackParamList, T> {
+//   onSubmit: (createEventRequest: EventRequest) => void;
+// }
 
 export interface CreateEventFormProps {
   onSubmit: (createEventRequest: EventRequest) => void;

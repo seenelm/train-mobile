@@ -9,9 +9,16 @@ import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
 import { useEvent } from "../context/EventContext";
 import * as Icons from "../../../assets/icons";
+import { MainStackParamList } from "../../../navigation/types/navigationTypes";
+import { useNavigation } from "@react-navigation/native";
+// import { NavigationProps } from "../../../navigation/types/navigationTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type CreateEventFormNavigationProp = StackNavigationProp<MainStackParamList, "SearchLocation">;
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const { event, setEvent } = useEvent();
+  const navigation = useNavigation<CreateEventFormNavigationProp>();
 
   const updateEvent = (partialEvent: Partial<Event>) => {
     setEvent((prevEvent) => ({
@@ -24,6 +31,19 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     const createEventRequest: EventRequest = fromEvent(event);
     onSubmit(createEventRequest);
   };
+
+  const nav = (screen: keyof MainStackParamList) => {
+    try {
+    navigation.navigate(screen);
+    } catch (e) {
+      console.log("Nav Error: ", e);
+    }
+  };
+
+  // const openSearchLocation = () => {
+  //   // Navigate to the search location view
+  //   navigation.navigate("SearchLocation");
+  // };
 
   return (
     <View style={styles.container}>
@@ -93,13 +113,20 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         <Button imgSource={Icons.more} imgStyle={styles.editImage} style={styles.editDate}/>
       </View>
 
-      <EventInput
+      {/* <EventInput
         placeholder="Add Location"
         value={event.location}
         imgSrc={Icons.location}
         imgStyle={styles.locationImg}
         onChangeText={(text) => updateEvent({ location: text })}
-      />
+      /> */}
+
+      <Button
+        imgStyle={styles.locationImg}
+        imgSource={Icons.location}
+        onPress={() => nav('SearchLocation')}
+      >Add Location
+      </Button>
 
       <View style={styles.dateRow}>
         <Text style={styles.date}>Add People</Text>
