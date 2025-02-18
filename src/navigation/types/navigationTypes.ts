@@ -1,11 +1,11 @@
-
 export type MainStackParamList = {
-    BottomTabs: undefined;
-    CreateEvent: undefined;
-    EventOverview: undefined;
-    Profile: undefined;
-    ChatView: undefined;
-    SearchView: undefined;
+  BottomTabs: undefined;
+  CreateEvent: undefined;
+  SearchLocation: undefined;
+  EventOverview: undefined;
+  Profile: undefined;
+  ChatView: undefined;
+  SearchView: undefined;
 };
 
 export type NavigationProps = {
