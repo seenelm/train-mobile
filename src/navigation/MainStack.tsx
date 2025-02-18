@@ -7,6 +7,7 @@ import EventOverview from '../app/events/views/EventOverview';
 import ChatView from '../app/chat/views/ChatView';
 import SearchView from '../app/search/views/SearchView';
 import SearchLocation from '../app/events/components/SearchLocation';
+import { createStackNavigator,  } from "@react-navigation/stack";
 
 import { MainStackParamList } from './types/navigationTypes';
 
@@ -23,7 +24,7 @@ const MainStack = () => {
       >
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="CreateEvent" component={CreateEventView} />
-        <Stack.Screen name="SearchLocation" component={SearchLocation} />
+        <Stack.Screen name="SearchLocation" component={SearchLocation} options={{presentation: "modal"}} />
         <Stack.Screen name="EventOverview" component={EventOverview} />
         <Stack.Screen name="Profile" component={ProfileView} />
         <Stack.Screen name="ChatView" component={ChatView} />
