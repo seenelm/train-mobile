@@ -5,7 +5,8 @@ import GeoLocation from "react-native-geolocation-service";
 import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { gkey } from "../../../common/config";
 import { Marker } from "react-native-maps";
-
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface Region {
     latitude: number;
@@ -20,8 +21,12 @@ interface Location {
 }
 
 interface SearchResult {
-  description: string;
+  // description: string;
+  formattedAddress: string;
   place_id: string;
+  locationName: string;
+  icon: string;
+  iconBackgroundColor: string;
 }
 
 const SearchLocation: React.FC = () => {
@@ -32,10 +37,18 @@ const SearchLocation: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const mapRef = useRef<MapView | null>(null);
+    const sheetRef = useRef<BottomSheet>(null);
+    const snapPoints = ['50%', '90%'];
+
 
     useEffect(() => {
       requestLocationPermission();
     }, []);
+
+    useEffect(() => {
+      sheetRef.current?.expand();
+    }, []);
+    
 
     // Request location permission from native ios or android device
     async function requestLocationPermission() {
@@ -91,26 +104,6 @@ const SearchLocation: React.FC = () => {
       )
     };
     
-    // Get address from Google Maps API
-    // const getAddressFromCoordinates = async (lat: number, lng: number) => {
-    //   try {
-    //       const response = await fetch(
-    //         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${gkey}`
-    //       );
-    //       const data = await response.json();
-    //       console.log("ADDRESS: ", data);
-
-    //       if (data.status === "OK") {
-    //         setAddress(data.results[0].formatted_address);
-    //       } else {
-    //         setAddress("Address not found");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching address:", error);
-    //       setAddress("Error fetching address");
-    //     }
-    //     setLoading(false);
-    //   };
     
 
 
@@ -118,18 +111,27 @@ const SearchLocation: React.FC = () => {
       const searchLocations = async (query: string) => {
         if (!query) return;
         setLocationQuery(query);
-
         try {
+          // const response = await fetch(
+          //   `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${gkey}&types=geocode`
+          // );
+
           const response = await fetch(
-            `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${gkey}&types=geocode`
+            `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${gkey}`
           );
           const data = await response.json();
           console.log("Search Location Data: ", data);
 
           if (data.status === "OK") {
             const locations: SearchResult[] = [];
-            for (const item of data.predictions) {
-              const location: SearchResult = { place_id: item.place_id, description: item.description};
+            for (const item of data.results) {
+              const location: SearchResult = { 
+                place_id: item.place_id, 
+                formattedAddress: item.formatted_address,
+                icon: item.icon,
+                iconBackgroundColor: item.icon_background_color,
+                locationName: item.name
+              };
               locations.push(location);
             }
             console.log("Locations: ", locations);
@@ -154,6 +156,7 @@ const SearchLocation: React.FC = () => {
             updateMapView(lat, lng);
             setSearchResults([]); // Clear search results after selection
             setLocationQuery(""); // Reset search bar
+            // sheetRef.current?.snapToIndex(1); // Collapse bottom sheet
           }
         } catch (error) {
           console.error("Error fetching place details:", error);
@@ -161,50 +164,60 @@ const SearchLocation: React.FC = () => {
       };
 
 
-    return (
-      <View style={styles.container}>
-      {/* Search Bar */}
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search for a location"
-        value={locationQuery}
-        onChangeText={searchLocations}
-      />
+      return (
+        <GestureHandlerRootView style={styles.container}>
+          {region &&
+            <MapView
+                ref={mapRef}
+                style={styles.map}
+                region={region}
+                showsUserLocation={true}
+                showsMyLocationButton={false}
+            >
+          
+                {region && <Marker coordinate={region} />}
+            </MapView>
+          }
 
-      {/* Search Results List */}
-      {searchResults.length > 0 && (
-        <FlatList
-          data={searchResults}
-          keyExtractor={(item) => item.place_id}
-          style={styles.searchResults}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.resultItem} onPress={() => selectLocation(item.place_id)}>
-              <Text>{item.description}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
+            <BottomSheet
+                ref={sheetRef}
+                index={0}
+                snapPoints={snapPoints}
+                keyboardBehavior="interactive"
+                keyboardBlurBehavior="restore"
+                backgroundStyle={styles.sheetBackground}
+                handleIndicatorStyle={styles.handleIndicator}
+            >
+                <BottomSheetView style={styles.sheetContent}>
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search for a location"
+                        value={locationQuery}
+                        onChangeText={searchLocations}
+                        onFocus={() => sheetRef.current?.snapToIndex(2)}
+                    />
+                    <FlatList
+                        data={searchResults}
+                        keyExtractor={(item) => item.place_id}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                style={styles.resultItem}
+                                onPress={() => selectLocation(item.place_id)}
+                            >
+                                <Text>{item.formattedAddress}</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </BottomSheetView>
+            </BottomSheet>
 
-      {/* Map View */}
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        // region={region}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-      >
-        {/* Marker for the selected location */}
-        { region && (
-            <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
-          )
-        }
-      </MapView>
-
-      {/* Button to Get Current Location */}
-      <TouchableOpacity style={styles.locationButton} onPress={requestLocationPermission}>
-        <Text style={styles.buttonText}>📍 Use My Location</Text>
-      </TouchableOpacity>
-    </View>
+            {/* <TouchableOpacity 
+                style={styles.locationButton} 
+                onPress={requestLocationPermission}
+            >
+                <Text style={styles.buttonText}>📍</Text>
+            </TouchableOpacity> */}
+        </GestureHandlerRootView>
     );
 };
 
@@ -212,14 +225,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  searchInput: {
+  map: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height:  "100%",
+},
+sheetBackground: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+},
+handleIndicator: {
+    backgroundColor: '#ccc',
+    width: 40,
+    height: 4,
+    marginVertical: 8,
+},
+sheetContent: {
+    flex: 1,
+    paddingHorizontal: 16,
+},
+searchInput: {
     height: 50,
     borderRadius: 10,
     paddingHorizontal: 15,
     fontSize: 16,
-    backgroundColor: "#fff",
-    margin: 10,
-  },
+    backgroundColor: "#f5f5f5",
+    marginBottom: 10,
+},
   searchResults: {
     position: "absolute",
     top: 60,
@@ -234,10 +266,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
-  },
-  map: {
-    width: "100%",
-    height:  "100%",
   },
   locationButton: {
     position: "absolute",
