@@ -1,14 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { TextInput, FlatList, View, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Profile from "../components/Profile";
-import Group from "../components/Group";
-import searchicon from "../../../assets/icons/search.png";
 import { useSearchUsers } from "../services/searchActions";
 import { useIsFocused } from "@react-navigation/native";
-import back from "../../../assets/icons/back.png";
-import Button from "../../../components/button";
 import { SearchProps } from "../types/searchProps";
+import * as Components from "../components";
+import * as Icons from "../../../assets/icons";
+import Button from "../../../components/button";
+
 
 interface SearchItem {
   _id: string;
@@ -38,7 +37,7 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
     if (item.username) {
       return (
         <View style={searchStyles.searchContainer}>
-          <Profile showForwardIcon={true} />
+          <Components.Profile showForwardIcon={true} />
         </View>
       );
     } else if (
@@ -47,7 +46,7 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
       item.accountType === 1
     ) {
       return (
-        <Group/>
+        <Components.Group/>
       );
     } else if (
       item.groupName &&
@@ -55,11 +54,11 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
       item.accountType === 2
     ) {
       return (
-        <Group/>
+        <Components.Group/>
       );
     } else {
       return (
-        <Group/>
+        <Components.Group/>
       );
     }
   };
@@ -70,12 +69,12 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
         <Button
           style={searchStyles.iconContainer}
           imgStyle={searchStyles.back}
-          imgSource={back}
+          imgSource={Icons.back}
           onPress={() => navigation.goBack()}
         />
         <View style={searchStyles.searchBar}>
           <Image
-            source={searchicon}
+            source={Icons.search}
             style={{ width: 20, height: 20, marginRight: 10 }}
           />
           <TextInput
