@@ -18,3 +18,4 @@ export { default as location } from "./location.png";
 export { default as edit } from "./edit.webp";
 export { default as more } from "./more.png";
 export { default as back } from "./back.png";
+export { default as editing } from "./edit.png";
