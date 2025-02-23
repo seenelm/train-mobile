@@ -2,16 +2,23 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { NavigationProps } from "../../../navigation/types/navigationTypes";
 import { EventList } from "../components/EventList";
 import TopSheet from "../components/TopSheet";
 import Button from "../../../components/button";
 import addEvent from "../../../assets/icons/add.png";
 import { CalendarProvider } from "../context/CalendarContext";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { EventCRUDViewNavigationData } from "./EventCrudView";
 
+type RootStackParamList = { EventCRUDView: { data: EventCRUDViewNavigationData }; };
+
+type EventCRUDViewNavigationProps = StackNavigationProp<RootStackParamList, "EventCRUDView">;
 
 const EventLanding = () => {
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation<EventCRUDViewNavigationProps>();
+  const data: EventCRUDViewNavigationData = {
+    mode: 'create'
+  }
 
   return (
     <CalendarProvider>
@@ -20,7 +27,7 @@ const EventLanding = () => {
           <TopSheet /> 
           <EventList />
           <Button
-            onPress={() => navigation.navigate('CreateEvent')}
+            onPress={() => navigation.navigate('EventCRUDView', {data})}
             imgSource={addEvent}
             style={styles.addButton}
             imgStyle={styles.addIcon}
@@ -33,22 +40,6 @@ const EventLanding = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "transparent" },
-  eventList: { padding: 20 },
-  eventCard: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  eventImage: { width: 40, height: 40, marginRight: 10, borderRadius: 20 },
-  eventTitle: { fontSize: 16, fontWeight: "bold", color: "#333" },
-  eventDate: { fontSize: 14, color: "#666" },
   addButton: {
     backgroundColor: "white",
     borderRadius: 30,

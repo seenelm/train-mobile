@@ -2,18 +2,23 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { EventResponse } from "../models/eventModel";
+import { UserEventResponse } from "../models/eventModel";
+import { EventCRUDViewNavigationData } from "../views/EventCrudView";
 
 type EventCardProps = {
   item: {
     image?: any;
-    event: EventResponse;
+    userEventResponse: UserEventResponse;
   };
 };
 
-type RootStackParamList = { EventOverview: { event: EventResponse }; };
+// type RootStackParamList = { EventOverview: { userEventResponse: UserEventResponse }; };
 
-type EventOverviewScreenNavigationProp = StackNavigationProp<RootStackParamList, "EventOverview">;
+// type EventOverviewScreenNavigationProp = StackNavigationProp<RootStackParamList, "EventOverview">;
+
+type RootStackParamList = { EventCRUDView: { data: EventCRUDViewNavigationData }; };
+
+type EventCRUDViewNavigationProps = StackNavigationProp<RootStackParamList, "EventCRUDView">;
 
 const formatTime = (date: string | Date): string => {
   const parsedDate = date instanceof Date ? date : new Date(date);
@@ -48,21 +53,26 @@ const formatEventDate = (startTime: string | Date, endTime: string | Date): stri
 };
 
 const EventCard = ({ item }: EventCardProps) => {
-  const navigation = useNavigation<EventOverviewScreenNavigationProp>();
+  const navigation = useNavigation<EventCRUDViewNavigationProps>();
 
   const handlePress = () => {
-    navigation.navigate("EventOverview", { event: item.event });
+    const data: EventCRUDViewNavigationData = {
+      mode: 'view',
+      userEventResponse: item.userEventResponse
+    };
+
+    navigation.navigate("EventCRUDView", {data});
   };
 
   return (
     <TouchableOpacity style={styles.eventCard} onPress={handlePress}>
       {item.image && <Image source={item.image} style={styles.eventImage} />}
       <View style={styles.eventDetails}>
-        <Text style={styles.eventTitle}>{item.event.name}</Text>
+        <Text style={styles.eventTitle}>{item.userEventResponse.event.name}</Text>
         <Text style={styles.eventDate}>
-          {formatEventDate(item.event.startTime, item.event.endTime)}
+          {formatEventDate(item.userEventResponse.event.startTime, item.userEventResponse.event.endTime)}
         </Text>
-        <Text style={styles.eventLocation}>{item.event.location}</Text>
+        <Text style={styles.eventLocation}>{item.userEventResponse.event.location}</Text>
       </View>
     </TouchableOpacity>
   );
