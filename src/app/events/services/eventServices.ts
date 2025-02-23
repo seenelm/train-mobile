@@ -54,7 +54,8 @@ export const updateUserEventStatus = async (
   eventId: string
 ): Promise<void> => {
   try {
-    await api.put(`/events/${eventId}/users/${userId}`, eventStatus);
+    console.log("attempting to send update", eventStatus)
+    await api.put(`/events/${eventId}/status/users/${userId}`, { eventStatus });
   } catch (error) {
     console.error(error);
     throw error;

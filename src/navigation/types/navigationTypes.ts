@@ -6,6 +6,7 @@ export type MainStackParamList = {
   Profile: undefined;
   ChatView: undefined;
   SearchView: undefined;
+  EventCRUDView: undefined;
 };
 
 export type NavigationProps = {

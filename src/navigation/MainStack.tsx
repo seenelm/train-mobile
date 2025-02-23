@@ -7,7 +7,7 @@ import EventOverview from '../app/events/views/EventOverview';
 import ChatView from '../app/chat/views/ChatView';
 import SearchView from '../app/search/views/SearchView';
 import SearchLocationView from '../app/events/views/SearchLocationView';
-
+import EventCRUDView from '../app/events/views/EventCRUDView';
 
 import { MainStackParamList } from './types/navigationTypes';
 
@@ -25,10 +25,10 @@ const MainStack = () => {
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="CreateEvent" component={CreateEventView} />
         <Stack.Screen name="SearchLocation" component={SearchLocationView} options={{presentation: "modal"}} />
-        <Stack.Screen name="EventOverview" component={EventOverview} options={{presentation: "modal"}}/>
         <Stack.Screen name="Profile" component={ProfileView} />
         <Stack.Screen name="ChatView" component={ChatView} />
         <Stack.Screen name="SearchView" component={SearchView} />
+        <Stack.Screen name="EventCRUDView" component={EventCRUDView} options={{presentation: "modal"}}/>
       </Stack.Navigator>
     );
   };

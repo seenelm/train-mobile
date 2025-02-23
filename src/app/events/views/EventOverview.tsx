@@ -16,18 +16,29 @@ import * as Icons from "../../../assets/icons";
 import Button from '../../../components/button';
 import { UserEventResponse } from '../models/eventModel';
 import EditEventForm from '../components/EditEventForm';
+import { selectUser } from '../../../services/authSlice';
+import { useSelector } from 'react-redux';
+import { useUpdateUserEventStatus } from '../services/eventActions';
 
-const EventOverview: React.FC = () => {
-  const route = useRoute();
+interface EventOverviewProps {
+  userEventResponse: UserEventResponse;
+}
+
+const EventOverview: React.FC<EventOverviewProps> = ({ userEventResponse }) => {
   const [eventStatus, setEventStatus] = useState<string>("");
+  console.log("EventStatus", eventStatus);
   const [modalVisible, setModalVisible] = useState(false);
-  const { userEventResponse } = route.params as { userEventResponse: UserEventResponse };
   const [isEditing, setIsEditing] = useState(false);
 
+  const userId = useSelector(selectUser);
+   console.log("userid", userId, "eventid", userEventResponse.event.id)
+  
+  const { mutate: updateUserEventStatusMutation } = useUpdateUserEventStatus(userEventResponse.event.id, userId);
+  
   useEffect(() => {
     handleEventStatus();
   }, []);
-
+  
   const handleEventStatus = () => {
     if (userEventResponse.status === 1) {
       setEventStatus("Maybe");
@@ -38,11 +49,18 @@ const EventOverview: React.FC = () => {
     }
   };
 
-  const handleOptionSelect = (option: string) => {
-    console.log(`User selected: ${option}`);
-    // Additional logic to update event status can be added here.
+  const handleOptionSelect = (option: number) => {
+    // Determine the corresponding label for UI purposes.
+    const label = option === 2 ? "Accept" : option === 1 ? "Maybe" : "Decline";
+    console.log(`User selected: ${label}`);
+    setEventStatus(label);
+  
+    // Send the number directly to updateUserEventStatusMutation.
+    updateUserEventStatusMutation(option);
     setModalVisible(false);
   };
+  
+  
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -173,22 +191,23 @@ const EventOverview: React.FC = () => {
             <Text style={styles.modalTitle}>Select Status</Text>
             <TouchableOpacity
               style={[styles.modalButton, styles.acceptButton]}
-              onPress={() => handleOptionSelect('Accept')}
+              onPress={() => handleOptionSelect(2)}
             >
               <Text style={styles.modalButtonText}>Accept</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modalButton, styles.maybeButton]}
-              onPress={() => handleOptionSelect('Maybe')}
+              onPress={() => handleOptionSelect(1)}
             >
               <Text style={styles.modalButtonText}>Maybe</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modalButton, styles.declineButton]}
-              onPress={() => handleOptionSelect('Decline')}
+              onPress={() => handleOptionSelect(3)}
             >
               <Text style={styles.modalButtonText}>Decline</Text>
             </TouchableOpacity>
+
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text style={styles.modalCancelText}>Cancel</Text>
             </TouchableOpacity>

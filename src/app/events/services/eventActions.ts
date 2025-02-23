@@ -30,12 +30,28 @@ export const useUpdateEvent = (eventId: string, adminId: string) => {
   return useMutation({
     mutationFn: (eventRequest: EventRequest) => updateEvent(eventRequest, eventId, adminId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["userEventById"]);
+      queryClient.invalidateQueries(["userEvents"]);
 
     },
     onError: (error) => {
       // log error to file
       console.error("useCreateEvent mutation error: ", error);
+    },
+  });
+};
+
+export const useUpdateUserEventStatus = ( userId: string, eventId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (eventStatus: number) => updateUserEventStatus(eventStatus, userId, eventId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userEvents"]);
+
+    },
+    onError: (error) => {
+      // log error to file
+      console.error("useUpdateUserEventStatus mutation error: ", error);
     },
   });
 };

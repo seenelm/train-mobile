@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { UserEventResponse } from "../models/eventModel";
+import { EventCRUDViewNavigationData } from "../views/EventCrudView";
 
 type EventCardProps = {
   item: {
@@ -11,9 +12,13 @@ type EventCardProps = {
   };
 };
 
-type RootStackParamList = { EventOverview: { userEventResponse: UserEventResponse }; };
+// type RootStackParamList = { EventOverview: { userEventResponse: UserEventResponse }; };
 
-type EventOverviewScreenNavigationProp = StackNavigationProp<RootStackParamList, "EventOverview">;
+// type EventOverviewScreenNavigationProp = StackNavigationProp<RootStackParamList, "EventOverview">;
+
+type RootStackParamList = { EventCRUDView: { data: EventCRUDViewNavigationData }; };
+
+type EventCRUDViewNavigationProps = StackNavigationProp<RootStackParamList, "EventCRUDView">;
 
 const formatTime = (date: string | Date): string => {
   const parsedDate = date instanceof Date ? date : new Date(date);
@@ -48,10 +53,15 @@ const formatEventDate = (startTime: string | Date, endTime: string | Date): stri
 };
 
 const EventCard = ({ item }: EventCardProps) => {
-  const navigation = useNavigation<EventOverviewScreenNavigationProp>();
+  const navigation = useNavigation<EventCRUDViewNavigationProps>();
 
   const handlePress = () => {
-    navigation.navigate("EventOverview", { userEventResponse: item.userEventResponse });
+    const data: EventCRUDViewNavigationData = {
+      mode: 'view',
+      userEventResponse: item.userEventResponse
+    };
+
+    navigation.navigate("EventCRUDView", {data});
   };
 
   return (
