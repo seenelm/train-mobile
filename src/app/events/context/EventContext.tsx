@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useRef } from 'react';
 import { Event } from '../types/eventTypes';
 
 interface EventContextType {
@@ -25,7 +25,7 @@ export const EventProvider: React.FC<EventProviderProps> = ({ children, userId }
   });
 
   return (
-    <EventContext.Provider value={{ event, setEvent }}>
+    <EventContext.Provider value={{ event, setEvent}}>
       {children}
     </EventContext.Provider>
   );

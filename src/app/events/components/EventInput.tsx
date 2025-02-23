@@ -7,6 +7,7 @@ const EventInput: React.FC<EventInputFormProps> = ({
   placeholder,
   value,
   onChangeText,
+  onPress,
   style,
   imgSrc,
   imgStyle,
@@ -18,6 +19,7 @@ const EventInput: React.FC<EventInputFormProps> = ({
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
+        onPress={onPress}
         style={[styles.input, style]}
       />
       {hasButton && <AddDescriptionButton />}
