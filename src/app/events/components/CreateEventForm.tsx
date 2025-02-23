@@ -11,32 +11,20 @@ import { useEvent } from "../context/EventContext";
 import * as Icons from "../../../assets/icons";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
 import { useNavigation } from "@react-navigation/native";
-// import { NavigationProps } from "../../../navigation/types/navigationTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
 import { selectLocation } from "../../../services/locationSlice";
-
 
 type CreateEventFormNavigationProp = StackNavigationProp<MainStackParamList, "SearchLocation">;
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const selectedLocation = useSelector(selectLocation);
-  const { event, setEvent } = useEvent();
+  const { event, updateEvent } = useEvent();
   const navigation = useNavigation<CreateEventFormNavigationProp>();
 
   useEffect(() => {
     updateEvent({ location: selectedLocation });
   }, [selectedLocation]);
-
-  const updateEvent = (partialEvent: Partial<Event>) => {
-    setEvent((prevEvent) => ({
-        ...prevEvent,
-        ...partialEvent,
-    }));
-
-    console.log("EVENT**: ", event);
-
-  }
 
   const handleSubmit = () => {
     const createEventRequest: EventRequest = fromEvent(event);
@@ -51,10 +39,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     }
   };
 
-  // const openSearchLocation = () => {
-  //   // Navigate to the search location view
-  //   navigation.navigate("SearchLocation");
-  // };
 
   return (
     <View style={styles.container}>

@@ -7,8 +7,9 @@ import { Event } from "../types/eventTypes";
 import { EventRequest, fromEvent } from "../models/eventModel";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../services/authSlice';
+import { useEvent } from '../context/EventContext';
 
-type EditEventFormProps = {
+interface EditEventFormProps {
   userEventResponse: UserEventResponse;
   onSave: (updatedEvent: EventRequest) => void;
   onCancel: () => void;
@@ -17,6 +18,7 @@ type EditEventFormProps = {
 const EditEventForm: React.FC<EditEventFormProps> = ({ userEventResponse, onSave, onCancel }) => {
   const adminId = useSelector(selectUser);
   const { mutate: updateEventMutation } = useUpdateEvent(userEventResponse.event.id, adminId);
+  const { updateEvent } = useEvent();
 
   // Local state for the form fields.
   const [eventName, setEventName] = useState(userEventResponse.event.name);
@@ -33,8 +35,12 @@ const EditEventForm: React.FC<EditEventFormProps> = ({ userEventResponse, onSave
       startTime: eventStartTime,
       location: eventLocation,
     });
+
     // Trigger the PUT mutation.
     updateEventMutation(updatedEvent);
+
+    // Update Event Context
+    updateEvent(updatedEvent);
     // Call the onSave callback (for example, to close the edit form).
     onSave(updatedEvent);
   };
