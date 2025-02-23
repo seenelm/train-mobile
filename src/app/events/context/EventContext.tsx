@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useRef } from 'react';
 import { Event } from '../types/eventTypes';
 
 interface EventContextType {
   event: Event;
   setEvent: React.Dispatch<React.SetStateAction<Event>>;
+  updateEvent: (partialEvent: Partial<Event>) => void;
 }
 
 const EventContext = createContext<EventContextType | undefined>(undefined);
@@ -24,8 +25,15 @@ export const EventProvider: React.FC<EventProviderProps> = ({ children, userId }
     description: "",
   });
 
+  const updateEvent = (partialEvent: Partial<Event>) => {
+    setEvent((prevEvent) => ({
+        ...prevEvent,
+        ...partialEvent,
+    }));
+  }
+
   return (
-    <EventContext.Provider value={{ event, setEvent }}>
+    <EventContext.Provider value={{ event, setEvent, updateEvent}}>
       {children}
     </EventContext.Provider>
   );

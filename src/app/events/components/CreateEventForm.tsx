@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
@@ -11,21 +11,20 @@ import { useEvent } from "../context/EventContext";
 import * as Icons from "../../../assets/icons";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
 import { useNavigation } from "@react-navigation/native";
-// import { NavigationProps } from "../../../navigation/types/navigationTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
+import { selectLocation } from "../../../services/locationSlice";
 
 type CreateEventFormNavigationProp = StackNavigationProp<MainStackParamList, "SearchLocation">;
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
-  const { event, setEvent } = useEvent();
+  const selectedLocation = useSelector(selectLocation);
+  const { event, updateEvent } = useEvent();
   const navigation = useNavigation<CreateEventFormNavigationProp>();
 
-  const updateEvent = (partialEvent: Partial<Event>) => {
-    setEvent((prevEvent) => ({
-        ...prevEvent,
-        ...partialEvent,
-    }));
-  }
+  useEffect(() => {
+    updateEvent({ location: selectedLocation });
+  }, [selectedLocation]);
 
   const handleSubmit = () => {
     const createEventRequest: EventRequest = fromEvent(event);
@@ -40,10 +39,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     }
   };
 
-  // const openSearchLocation = () => {
-  //   // Navigate to the search location view
-  //   navigation.navigate("SearchLocation");
-  // };
 
   return (
     <View style={styles.container}>
@@ -113,20 +108,20 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         <Button imgSource={Icons.more} imgStyle={styles.editImage} style={styles.editDate}/>
       </View>
 
-      {/* <EventInput
+      <EventInput
         placeholder="Add Location"
         value={event.location}
         imgSrc={Icons.location}
         imgStyle={styles.locationImg}
-        onChangeText={(text) => updateEvent({ location: text })}
-      /> */}
+        onPress={() => nav('SearchLocation')}
+      />
 
-      <Button
+      {/* <Button
         imgStyle={styles.locationImg}
         imgSource={Icons.location}
         onPress={() => nav('SearchLocation')}
       >Add Location
-      </Button>
+      </Button> */}
 
       <View style={styles.dateRow}>
         <Text style={styles.date}>Add People</Text>
@@ -139,6 +134,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
       /> 
 
       <Button onPress={handleSubmit} style={styles.save} textStyle={styles.saveText}>Create Event</Button>
+
+
     </View>
   );
 };

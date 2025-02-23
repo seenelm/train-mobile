@@ -31,7 +31,7 @@ export const EventList = () => {
         >
             <FlatList
                 data={filteredEvents}
-                renderItem={({ item }) => <EventCard item={item} />}
+                renderItem={({ item }) => <EventCard item={{ userEventResponse: item }} />}
                 keyExtractor={(item) => item.event.id}
                 contentContainerStyle={styles.eventList}
                 showsVerticalScrollIndicator={false}

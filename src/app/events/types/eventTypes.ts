@@ -37,11 +37,12 @@ export interface CreateEventFormProps {
 export interface EventInputFormProps {
   placeholder: string;
   value?: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   style?: TextStyle; // Optional, only for inputs like the description
   imgSrc?: ImageProps;
   imgStyle?: ImageStyle;
   hasButton?: boolean;
+  onPress?: () => void;
   addDescriptionButton?: AddDescriptionButtonProps;
 }
 

@@ -28,7 +28,8 @@ export const fromEvent = (event: Event): EventRequest => {
         invitees: event.invitees,
         startTime: event.startTime,
         endTime: event.endTime,
-        location: event.location
+        location: event.location,
+        description: event.description
     }
     return createEventRequest;
 }
