@@ -14,7 +14,7 @@ import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Icons from "../../../assets/icons";
 import Button from '../../../components/button';
-import { UserEventResponse } from '../models/eventModel';
+import { UserEventResponse, UserEventStatusRequest } from '../models/eventModel';
 import EditEventForm from '../components/EditEventForm';
 import { selectUser } from '../../../services/authSlice';
 import { useSelector } from 'react-redux';
@@ -33,7 +33,7 @@ const EventOverview: React.FC<EventOverviewProps> = ({ userEventResponse }) => {
   const userId = useSelector(selectUser);
    console.log("userid", userId, "eventid", userEventResponse.event.id)
   
-  const { mutate: updateUserEventStatusMutation } = useUpdateUserEventStatus(userEventResponse.event.id, userId);
+  const { mutate: updateUserEventStatusMutation } = useUpdateUserEventStatus(userEventResponse.event.id);
   
   useEffect(() => {
     handleEventStatus();
@@ -54,9 +54,14 @@ const EventOverview: React.FC<EventOverviewProps> = ({ userEventResponse }) => {
     const label = option === 2 ? "Accept" : option === 1 ? "Maybe" : "Decline";
     console.log(`User selected: ${label}`);
     setEventStatus(label);
+
+    const userEventStatusRequest: UserEventStatusRequest = {
+      userId: userId,
+      eventStatus: option,
+    };
   
     // Send the number directly to updateUserEventStatusMutation.
-    updateUserEventStatusMutation(option);
+    updateUserEventStatusMutation(userEventStatusRequest);
     setModalVisible(false);
   };
   

@@ -3,6 +3,7 @@ import {
   EventRequest,
   EventResponse,
   UserEventResponse,
+  UserEventStatusRequest,
 } from "../models/eventModel";
 
 export const createEvent = async (
@@ -16,9 +17,16 @@ export const createEvent = async (
   }
 };
 
-export const updateEvent = async (eventRequest: EventRequest, eventId: string, adminId: string) => {
+export const updateEvent = async (
+  eventRequest: EventRequest,
+  eventId: string,
+  adminId: string
+) => {
   try {
-    const response = await api.put(`/events/${eventId}/users/${adminId}`, eventRequest);
+    const response = await api.put(
+      `/events/${eventId}/users/${adminId}`,
+      eventRequest
+    );
     console.log("UPDATE EVENT RESPONSE STATUS: ", response.status);
   } catch (error) {
     console.error(error);
@@ -38,7 +46,10 @@ export const getUserEvents = async (
   }
 };
 
-export const getUserEventById = async (eventId: string, userId: string): Promise<UserEventResponse> => {
+export const getUserEventById = async (
+  eventId: string,
+  userId: string
+): Promise<UserEventResponse> => {
   try {
     const response = await api.get(`/events/${eventId}/users/${userId}`);
     return response.data;
@@ -46,18 +57,16 @@ export const getUserEventById = async (eventId: string, userId: string): Promise
     console.error("Error fetching user event by id:", error);
     throw error;
   }
-}
+};
 
 export const updateUserEventStatus = async (
-  eventStatus: number,
-  userId: string,
-  eventId: string
+  eventId: string,
+  userEventStatusRequest: UserEventStatusRequest
 ): Promise<void> => {
   try {
-    console.log("attempting to send update", eventStatus)
-    await api.put(`/events/${eventId}/status/users/${userId}`, { eventStatus });
+    await api.put(`/events/${eventId}/status`, userEventStatusRequest);
   } catch (error) {
     console.error(error);
     throw error;
   }
-}
+};
