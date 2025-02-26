@@ -1,19 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { 
-  createEvent, 
+import {
+  createEvent,
   getUserEvents,
   updateEvent,
   updateUserEventStatus,
-  getUserEventById
- } from "./eventServices";
-import { EventRequest } from "../models/eventModel";
+  getUserEventById,
+} from "./eventServices";
+import { EventRequest, UserEventStatusRequest } from "../models/eventModel";
 import { EventResponse } from "../models/eventModel";
 
 export const useCreateEvent = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (createEventRequest: EventRequest): Promise<EventResponse> => createEvent(createEventRequest),
+    mutationFn: (createEventRequest: EventRequest): Promise<EventResponse> =>
+      createEvent(createEventRequest),
     onSuccess: () => {
       queryClient.invalidateQueries(["userEvents"]);
     },
@@ -28,10 +29,10 @@ export const useUpdateEvent = (eventId: string, adminId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (eventRequest: EventRequest) => updateEvent(eventRequest, eventId, adminId),
+    mutationFn: (eventRequest: EventRequest) =>
+      updateEvent(eventRequest, eventId, adminId),
     onSuccess: () => {
       queryClient.invalidateQueries(["userEvents"]);
-
     },
     onError: (error) => {
       // log error to file
@@ -40,14 +41,14 @@ export const useUpdateEvent = (eventId: string, adminId: string) => {
   });
 };
 
-export const useUpdateUserEventStatus = ( userId: string, eventId: string) => {
+export const useUpdateUserEventStatus = (eventId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (eventStatus: number) => updateUserEventStatus(eventStatus, userId, eventId),
+    mutationFn: (userEventStatusRequest: UserEventStatusRequest) =>
+      updateUserEventStatus(eventId, userEventStatusRequest),
     onSuccess: () => {
       queryClient.invalidateQueries(["userEvents"]);
-
     },
     onError: (error) => {
       // log error to file
@@ -65,7 +66,7 @@ export const useGetUserEvents = (userId: string) => {
       console.error("useGetUserEvents query error: ", error);
     },
   });
-}
+};
 
 export const useGetUserEventById = (eventId: string, userId: string) => {
   return useQuery({
@@ -76,4 +77,4 @@ export const useGetUserEventById = (eventId: string, userId: string) => {
       console.error("useGetUserEventById query error: ", error);
     },
   });
-}
+};
