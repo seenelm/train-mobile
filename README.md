@@ -16,6 +16,7 @@ Before starting, ensure the following dependencies are installed on your system:
 |--------------------|--------------------------------------------------|-------------------------|
 | **Node.js & npm**   | [Download Node.js (LTS)](https://nodejs.org/)     | `node -v` / `npm -v`    |
 | **React Native CLI**| `npm install -g react-native-cli`                | N/A                     |
+| **Ruby**            | macOS: `brew install ruby` or use [rbenv](https://github.com/rbenv/rbenv) | `ruby -v`              |
 | **CocoaPods**       | `sudo gem install cocoapods`                     | `pod --version`         |
 | **Xcode**           | Install from [Mac App Store](https://apps.apple.com/) | Open Xcode & Agree to Terms |
 | **Watchman**        | `brew install watchman`                          | N/A                     |
@@ -58,4 +59,3 @@ Once the project has been built, start the React Native Metro bundler:
 
 ```bash
 npm start
-```

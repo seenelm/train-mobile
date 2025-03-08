@@ -15,7 +15,7 @@
 		2798F78B034327D2E420DE92 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BA5A26056CD4DEA194922807 /* Pods_Train.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B77766BB4E7C44E1C171B8 /* Pods_Train.framework */; };
-		C231DDAC2D7A581600A3D4CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C231DDAB2D7A581600A3D4CD /* GoogleService-Info.plist */; };
+		C231DDB22D7B892500A3D4CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C231DDB12D7B892500A3D4CD /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +44,8 @@
 		AED2E0F0051AFA26F577082F /* Pods-Train.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Train.debug.xcconfig"; path = "Target Support Files/Pods-Train/Pods-Train.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A22594D069FDC5BE27AFE /* Pods-Train.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Train.release.xcconfig"; path = "Target Support Files/Pods-Train/Pods-Train.release.xcconfig"; sourceTree = "<group>"; };
 		C1B77766BB4E7C44E1C171B8 /* Pods_Train.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Train.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C231DDAB2D7A581600A3D4CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C231DDB12D7B892500A3D4CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C2D7EA572D7BAEDF008A519C /* Train.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Train.entitlements; path = Train/Train.entitlements; sourceTree = "<group>"; };
 		DCAE9312CE88EF2D1A2A9B0D /* Pods-Train-TrainTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Train-TrainTests.debug.xcconfig"; path = "Target Support Files/Pods-Train-TrainTests/Pods-Train-TrainTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F0CBC18937160AA74F1F4049 /* Pods_Train_TrainTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Train_TrainTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +91,8 @@
 		13B07FAE1A68108700A75B9A /* Train */ = {
 			isa = PBXGroup;
 			children = (
+				C231DDB12D7B892500A3D4CD /* GoogleService-Info.plist */,
+				C2D7EA572D7BAEDF008A519C /* Train.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -121,7 +124,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				C231DDAB2D7A581600A3D4CD /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Train */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* TrainTests */,
@@ -249,7 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				C231DDAC2D7A581600A3D4CD /* GoogleService-Info.plist in Resources */,
+				C231DDB22D7B892500A3D4CD /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				2798F78B034327D2E420DE92 /* PrivacyInfo.xcprivacy in Resources */,
 			);
@@ -487,6 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Train/Train.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HHN8W864X2;
 				ENABLE_BITCODE = NO;
@@ -502,7 +505,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Train;
 				PRODUCT_NAME = Train;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -516,6 +519,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Train/Train.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HHN8W864X2;
 				INFOPLIST_FILE = Train/Info.plist;
@@ -530,7 +534,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Train;
 				PRODUCT_NAME = Train;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -617,10 +621,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -700,10 +701,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

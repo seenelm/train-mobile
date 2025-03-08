@@ -1,49 +1,68 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { selectUser, logout } from "../../../services/authSlice";
 import Button from "../../../components/button";
 import profile from "../../../assets/icons/profilepic.png";
 import edit from "../../../assets/icons/edit.webp";
+import messaging from '@react-native-firebase/messaging';
 
 const ProfileView: React.FC = () => {
   const userId: string | null = useSelector(selectUser);
   const dispatch = useDispatch();
 
+  async function getToken() {
+    const token = await messaging().getToken();
+    console.log('FCM Token:', token);
+    return token;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header Section */}
-      <View>
-        <Button
-          imgSource={edit}
-          style={styles.editButton}
-          imgStyle={styles.editIcon}
-          onPress={() => {}}
-        />
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header Section */}
+        <View>
+          <Button
+            imgSource={edit}
+            style={styles.editButton}
+            imgStyle={styles.editIcon}
+            onPress={() => {}}
+          />
+        </View>
 
-      {/* Profile Section */}
-      <View style={styles.profileSection}>
-        <Image style={styles.profileImg} source={profile} />
-        <Text style={styles.username}>Yassine</Text>
-        <Text style={styles.bio}>
-          Hi I'm a developer from New York - I currently work for Sculptor
-        </Text>
-      </View>
+        {/* Profile Section */}
+        <View style={styles.profileSection}>
+          <Image style={styles.profileImg} source={profile} />
+          <Text style={styles.username}>Yassine</Text>
+          <Text style={styles.bio}>
+            Hi I'm a developer from New York - I currently work for Sculptor
+          </Text>
+        </View>
 
-      {/* Actions Section */}
-      <View style={styles.actions}>
-        <Button style={styles.button} onPress={() => {}}>
-          Edit Profile
-        </Button>
-        <Button
-          style={[styles.button, styles.logoutButton]}
-          onPress={() => dispatch(logout())}
-        >
-          Logout
-        </Button>
-      </View>
+        {/* Actions Section */}
+        <View style={styles.actions}>
+          <Button style={styles.button} onPress={() => {}}>
+            Edit Profile
+          </Button>
+          <Button
+            style={[styles.button, styles.logoutButton]}
+            onPress={() => dispatch(logout())}
+          >
+            Logout
+          </Button>
+        </View>
+
+        <View>
+          <Button
+            style={styles.button}
+            onPress={getToken}
+          >
+            Get Token
+          </Button>
+        </View>
+
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -52,6 +71,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   editButton: {
     backgroundColor: "rgba(128, 128, 128, 0.5)",
@@ -101,6 +123,21 @@ const styles = StyleSheet.create({
   logoutButton: {
     backgroundColor: "#f66",
   },
+  testSection: {
+    paddingHorizontal: 30,
+    marginTop: 30,
+    gap: 15,
+  },
+  testButton: {
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: "#4a90e2",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  notificationButton: {
+    backgroundColor: "#5cb85c",
+  }
 });
 
 export default ProfileView;
