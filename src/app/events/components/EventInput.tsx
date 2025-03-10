@@ -2,6 +2,7 @@ import React from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
 import { EventInputFormProps } from "../types/eventTypes";
 import AddDescriptionButton from "./AddDescriptionButton";
+import AlertContextMenu from "./AlertContextMenu";
 
 const EventInput: React.FC<EventInputFormProps> = ({
   placeholder,
@@ -12,18 +13,20 @@ const EventInput: React.FC<EventInputFormProps> = ({
   imgSrc,
   imgStyle,
   hasButton,
+  hasAlert
 }) => {
   return (
     <View style={styles.container}>
-      <TextInput
+      {placeholder && <TextInput
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
         onPress={onPress}
         style={[styles.input, style]}
-      />
+      />}
       {hasButton && <AddDescriptionButton />}
       {imgSrc && <Image source={imgSrc} style={[styles.image, imgStyle]} />}
+      {hasAlert && <AlertContextMenu />}
     </View>
   );
 };

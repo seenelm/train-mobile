@@ -39,6 +39,33 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
 
   const insets = useSafeAreaInsets();
 
+  // Create pairs of cards for the rows
+  const renderCardRows = () => {
+    const rows = [];
+    for (let i = 0; i < cardData.length; i += 2) {
+      const row = (
+        <View key={`row-${i}`} style={styles.cardRow}>
+          <Card
+            imageUrl={cardData[i].imageUrl}
+            groupName={cardData[i].groupName}
+            groupId={cardData[i].groupId}
+            onPress={cardData[i].onPress}
+          />
+          {i + 1 < cardData.length && (
+            <Card
+              imageUrl={cardData[i + 1].imageUrl}
+              groupName={cardData[i + 1].groupName}
+              groupId={cardData[i + 1].groupId}
+              onPress={cardData[i + 1].onPress}
+            />
+          )}
+        </View>
+      );
+      rows.push(row);
+    }
+    return rows;
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -63,15 +90,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
         }
       />
       <ScrollView contentContainerStyle={styles.dashboard}>
-        {cardData.map((card, index) => (
-          <Card
-            key={index}
-            imageUrl={card.imageUrl}
-            groupName={card.groupName}
-            groupId={card.groupId}
-            onPress={card.onPress}
-          />
-        ))}
+        {renderCardRows()}
       </ScrollView>
     </View>
   );
@@ -83,11 +102,11 @@ const styles = StyleSheet.create({
   },
   dashboard: {
     flexGrow: 1,
+    // padding: 10,
+  },
+  cardRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    alignItems: "flex-start",
-    padding: 10,
+    margin: 10,
   },
   iconContainer: {
     flex: 1,
@@ -95,9 +114,8 @@ const styles = StyleSheet.create({
     maxHeight: 45,
     maxWidth: 45,
     backgroundColor: "transparent",
-    marginBottom: 10,
-  },
 
+  },
   profileImage: {
     width: 35,
     height: 35,
@@ -107,8 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     width: 40,
     height: 40,
-    padding: 5,
-
+    padding: 4,
   },
   image: {
     flex: 1,

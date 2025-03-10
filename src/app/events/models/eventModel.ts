@@ -1,4 +1,4 @@
-import { Event } from "../types/eventTypes";
+import { Event, AlertTime } from "../types/eventTypes";
 
 export interface EventResponse {
   id: string;
@@ -9,6 +9,7 @@ export interface EventResponse {
   endTime: string;
   location?: string;
   description?: string;
+  alertTime?: number;
 }
 
 export interface EventRequest {
@@ -19,6 +20,7 @@ export interface EventRequest {
   endTime: Date;
   location?: string;
   description?: string;
+  alertTime?: AlertTime;
 }
 
 export const fromEvent = (event: Event): EventRequest => {
@@ -30,6 +32,7 @@ export const fromEvent = (event: Event): EventRequest => {
     endTime: event.endTime,
     location: event.location,
     description: event.description,
+    alertTime: event.alertTime,
   };
   return createEventRequest;
 };

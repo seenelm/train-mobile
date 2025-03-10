@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useRef } from 'react';
-import { Event } from '../types/eventTypes';
+import { Event, AlertTime } from '../types/eventTypes';
 
 interface EventContextType {
   event: Event;
@@ -23,6 +23,7 @@ export const EventProvider: React.FC<EventProviderProps> = ({ children, userId }
     endTime: new Date(),
     location: "",
     description: "",
+    alertTime: AlertTime.AT_TIME, // Default alert time is at the time of event
   });
 
   const updateEvent = (partialEvent: Partial<Event>) => {

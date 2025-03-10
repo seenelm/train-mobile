@@ -32,20 +32,18 @@ const styles = StyleSheet.create({
   leftSection: {
     flex: 1,
     alignItems: "flex-start",
-    padding: 5, 
+
   },
   middleSection: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 5,
   },
   rightSection: {
     flex: 1,
     alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "flex-end",
-    padding: 5,
   },
 });
 

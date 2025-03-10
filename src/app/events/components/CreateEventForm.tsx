@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import EventInput from "./EventInput";
 import DateTimePickerButton from "./DateTimePicker";
 import Button from "../../../components/button";
 import { CreateEventFormProps } from "../types/eventTypes";
-import { Event } from "../types/eventTypes";
 import EventUtil from "../utils/eventUtils";
 import { EventRequest, fromEvent } from "../models/eventModel";
 import { useEvent } from "../context/EventContext";
@@ -14,6 +13,8 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
 import { selectLocation } from "../../../services/locationSlice";
+import { AlertTime } from "../types/eventTypes";
+import ContextMenu from "react-native-context-menu-view";
 
 type CreateEventFormNavigationProp = StackNavigationProp<MainStackParamList, "SearchLocation">;
 
@@ -21,6 +22,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
   const selectedLocation = useSelector(selectLocation);
   const { event, updateEvent } = useEvent();
   const navigation = useNavigation<CreateEventFormNavigationProp>();
+  const [showAlertMenu, setShowAlertMenu] = useState(false);
 
   useEffect(() => {
     updateEvent({ location: selectedLocation });
@@ -39,6 +41,43 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
     }
   };
 
+  const getAlertTimeText = (alertTime?: AlertTime): string => {
+    switch (alertTime) {
+      case AlertTime.AT_TIME:
+        return "At time of event";
+      case AlertTime.FIFTEEN_MIN:
+        return "15 minutes before";
+      case AlertTime.THIRTY_MIN:
+        return "30 minutes before";
+      case AlertTime.ONE_HOUR:
+        return "1 hour before";
+      default:
+        return "At time of event";
+    }
+  };
+
+  const handleAlertTimeSelect = (index: number) => {
+    let selectedAlertTime: AlertTime;
+    
+    switch (index) {
+      case 0:
+        selectedAlertTime = AlertTime.AT_TIME;
+        break;
+      case 1:
+        selectedAlertTime = AlertTime.FIFTEEN_MIN;
+        break;
+      case 2:
+        selectedAlertTime = AlertTime.THIRTY_MIN;
+        break;
+      case 3:
+        selectedAlertTime = AlertTime.ONE_HOUR;
+        break;
+      default:
+        selectedAlertTime = AlertTime.AT_TIME;
+    }
+    
+    updateEvent({ alertTime: selectedAlertTime });
+  };
 
   return (
     <View style={styles.container}>
@@ -116,13 +155,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
         onPress={() => nav('SearchLocation')}
       />
 
-      {/* <Button
-        imgStyle={styles.locationImg}
-        imgSource={Icons.location}
-        onPress={() => nav('SearchLocation')}
-      >Add Location
-      </Button> */}
+      {/* Alert Section */}
+      <View style={styles.dateRow}>
+        <Text style={styles.date}>Alert</Text>
+      </View>
+      <EventInput
 
+        onPress={() => setShowAlertMenu(true)}
+        hasAlert={true}
+      />
       <View style={styles.dateRow}>
         <Text style={styles.date}>Add People</Text>
       </View>
@@ -134,8 +175,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit }) => {
       /> 
 
       <Button onPress={handleSubmit} style={styles.save} textStyle={styles.saveText}>Create Event</Button>
-
-
     </View>
   );
 };
@@ -184,7 +223,6 @@ const styles = StyleSheet.create({
   },
   timeText: {
     alignSelf: "center",
-
   },
   save: {
     borderRadius: 5,
@@ -214,7 +252,39 @@ const styles = StyleSheet.create({
   searchImg: {
     width: 20,
     height: 20,
-  }
+  },
+  // Alert styles matching EventInput
+  alertWrapper: {
+    marginHorizontal: 10,
+    marginBottom: 10,
+    alignItems: "flex-start",
+  },
+  alertContainer: {
+    flexDirection: "row",
+    backgroundColor: "#f5f5f5",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 5,
+    height: 60, // Match the height of EventInput
+    width: "70%", // Ensure full width
+    marginLeft: 13,
+  },
+  alertContent: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+  },
+  alertInputText: {
+    flex: 1,
+    fontSize: 14,
+    color: "#333",
+  },
+  alertIcon: {
+    width: 20,
+    height: 20,
+  },
 });
 
 export default CreateEventForm;

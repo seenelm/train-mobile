@@ -4,6 +4,14 @@ import { TextStyle, ImageProps, ImageStyle } from "react-native";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+// Alert time options in minutes
+export enum AlertTime {
+  AT_TIME = 0,
+  FIFTEEN_MIN = 15,
+  THIRTY_MIN = 30,
+  ONE_HOUR = 60
+}
+
 // EVENT USER STATE
 export interface Event {
   name: string;
@@ -13,6 +21,7 @@ export interface Event {
   endTime: Date;
   location: string;
   description: string;
+  alertTime?: AlertTime;
 }
 
 /******************************************************************** */
@@ -35,7 +44,7 @@ export interface CreateEventFormProps {
 }
 
 export interface EventInputFormProps {
-  placeholder: string;
+  placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;
   style?: TextStyle; // Optional, only for inputs like the description
@@ -44,6 +53,7 @@ export interface EventInputFormProps {
   hasButton?: boolean;
   onPress?: () => void;
   addDescriptionButton?: AddDescriptionButtonProps;
+  hasAlert?: boolean;
 }
 
 export interface AddDescriptionButtonProps {
