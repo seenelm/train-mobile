@@ -1,5 +1,8 @@
+import { NavigationProp } from "@react-navigation/native";
+
 export type MainStackParamList = {
   BottomTabs: undefined;
+  TopTabs: undefined;
   CreateEvent: undefined;
   SearchLocation: undefined;
   EventOverview: undefined;
@@ -7,8 +10,12 @@ export type MainStackParamList = {
   ChatView: undefined;
   SearchView: undefined;
   EventCRUDView: undefined;
+  WeekView: undefined;
+  WorkoutView: { weekId: string };
+  ExerciseView: { workoutId: string };
+  SetView: { exerciseId: string };
 };
 
 export type NavigationProps = {
-  navigate: (screen: keyof MainStackParamList) => void;
+  navigation: NavigationProp<MainStackParamList>;
 };

@@ -1,70 +1,71 @@
 import React from "react";
-import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Image, StyleSheet, FlatList, RefreshControl, Text } from "react-native";
 import Card from "../../../components/card";
 import Button from "../../../components/button";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../../../components/header";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
+import GroupSkeleton from "../components/GroupSkeleton";
 import { DashboardProps } from "../types/dashboardProps";
 import * as Icons from "../../../assets/icons";
 import profile from "../../../assets/icons/profilepic.png"
 import logo from "../../../assets/icons/logo.png"
-
+import { selectUser } from "../../../services/authSlice";
+import { useSelector } from "react-redux";
+import { useFetchUserGroups } from "../services/groupActions";
+import { ObjectId } from "../../../utils/objectId";
 
 
 const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
-  const cardData = [
-    {
-      imageUrl: "https://via.placeholder.com/150",
-      groupName: "Fitspace A",
-      groupId: { id: 1 },
-      onPress: () => console.log("Pressed Fitspace A"),
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150",
-      groupName: "Fitspace B",
-      groupId: { id: 2 },
-      onPress: () => console.log("Pressed Fitspace B"),
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150",
-      groupName: "Fitspace C",
-      groupId: { id: 3 },
-      onPress: () => console.log("Pressed Fitspace C"),
-    },
-  ];
+  const userId = useSelector(selectUser);
+  // Only fetch user groups if userId exists
+  const { data: userGroupsResponse, isLoading, error } = userId ? useFetchUserGroups(new ObjectId(userId)) : { data: undefined, isLoading: false, error: null };
+  
+  // Extract the groups array from the response
+  const groups = userGroupsResponse?.groups || [];
+
+
   const nav = (screen: keyof MainStackParamList) => {
     navigation.navigate(screen);
   };
 
-  const insets = useSafeAreaInsets();
 
-  // Create pairs of cards for the rows
-  const renderCardRows = () => {
-    const rows = [];
-    for (let i = 0; i < cardData.length; i += 2) {
-      const row = (
-        <View key={`row-${i}`} style={styles.cardRow}>
-          <Card
-            imageUrl={cardData[i].imageUrl}
-            groupName={cardData[i].groupName}
-            groupId={cardData[i].groupId}
-            onPress={cardData[i].onPress}
-          />
-          {i + 1 < cardData.length && (
-            <Card
-              imageUrl={cardData[i + 1].imageUrl}
-              groupName={cardData[i + 1].groupName}
-              groupId={cardData[i + 1].groupId}
-              onPress={cardData[i + 1].onPress}
-            />
-          )}
-        </View>
-      );
-      rows.push(row);
-    }
-    return rows;
+  const renderItem = ({ item }) => {
+    console.log("Rendering item:", item);
+    return (
+      <Card
+        imageUrl="https://via.placeholder.com/150"
+        groupName={item.groupName}
+        groupId={item._id}
+        onPress={() => nav("TopTabs")}
+      />
+    );
   };
+
+  // Render skeleton items in the same layout as the cards
+  const renderSkeletons = () => {
+    // Create an array of 4 items for skeleton placeholders
+    const skeletonItems = [1, 2, 3, 4];
+    
+    return (
+      <FlatList
+        data={skeletonItems}
+        renderItem={() => <GroupSkeleton style={styles.groupSkeleton} />}
+        keyExtractor={(item) => item.toString()}
+        numColumns={2}
+        contentContainerStyle={styles.flatListContent}
+      />
+    );
+  };
+
+  const handleRefresh = () => {
+    // Add refresh logic here if needed
+    console.log("Refreshing groups list");
+  };
+
+  // If there's an error, show it
+  if (error) {
+    console.error("Error fetching groups:", error);
+  }
 
   return (
     <View style={styles.container}>
@@ -89,9 +90,23 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
           </>
         }
       />
-      <ScrollView contentContainerStyle={styles.dashboard}>
-        {renderCardRows()}
-      </ScrollView>
+      <View style={styles.dashboard}>
+        {isLoading ? (
+          renderSkeletons()
+        ) : groups && groups.length > 0 ? (
+          <FlatList
+            data={groups}
+            renderItem={renderItem}
+            keyExtractor={(item) => item._id}
+            numColumns={groups.length === 1 ? 1 : 2}
+            key={groups.length === 1 ? "singleColumn" : "doubleColumn"}
+            refreshControl={<RefreshControl refreshing={false} onRefresh={handleRefresh} />}
+            contentContainerStyle={styles.flatListContent}
+          />
+        ) : (
+          <Text style={styles.noGroupsText}>No groups found. Create or join a group to get started.</Text>
+        )}
+      </View>
     </View>
   );
 };
@@ -101,12 +116,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dashboard: {
-    flexGrow: 1,
-    // padding: 10,
+    flex: 1,
+    justifyContent: 'center',
   },
-  cardRow: {
-    flexDirection: "row",
-    margin: 10,
+  flatListContent: {
+    padding: 10,
   },
   iconContainer: {
     flex: 1,
@@ -114,7 +128,6 @@ const styles = StyleSheet.create({
     maxHeight: 45,
     maxWidth: 45,
     backgroundColor: "transparent",
-
   },
   profileImage: {
     width: 35,
@@ -131,6 +144,23 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
     marginTop: 2,
+  },
+  loadingText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#666',
+  },
+  noGroupsText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#666',
+    padding: 20,
+  },
+  groupSkeleton: {
+    flex: 1,
+    aspectRatio: 1,
+    margin: 5,
+    borderRadius: 8,
   },
 });
 
