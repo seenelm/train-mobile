@@ -36,7 +36,7 @@ export const fetchGroup = async (groupId: ObjectId) => {
   }
 }
 
-export const fetchUserGroups = async (userId: ObjectId): Promise<GroupResponse[] | undefined> => {
+export const fetchUserGroups = async (userId: string): Promise<UserGroupsResponse | undefined> => {
   try {
     const { data } = await api.get(`/users/${userId}/groups`);
     console.log("fetchUserGroups data: ", data);

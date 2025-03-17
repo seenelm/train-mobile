@@ -14,6 +14,7 @@ export type MainStackParamList = {
   WorkoutView: { weekId: string };
   ExerciseView: { workoutId: string };
   SetView: { exerciseId: string };
+  CreateProgram: undefined;
 };
 
 export type NavigationProps = {

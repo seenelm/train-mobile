@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import { MainStackParamList } from '../../../navigation/types/navigationTypes';
+import * as Icons from '../../../assets/icons';
 
 // Sample data for weeks in a program
 const programWeeks = [
@@ -62,43 +63,79 @@ const WeekView = ({ navigation }: WeekViewProps) => {
 
   const handleWeekPress = (weekId) => {
     // Navigate to specific workout view for this week
-   navigation.navigate('WorkoutView', { weekId });
+    navigation.navigate('WorkoutView', { weekId });
   };
+
+  const handleAddImage = (weekId, weekNumber) => {
+    // In a real app, you would implement image picker functionality here
+    Alert.alert(
+      'Add Image',
+      `This would open an image picker to add an image to Week ${weekNumber}.`,
+      [{ text: 'OK', onPress: () => console.log(`Add image for week ${weekId}`) }]
+    );
+  };
+
+  // Custom placeholder image component
+  const WeekPlaceholder = ({ weekNumber, title }) => (
+    <View style={styles.placeholderContainer}>
+      <Text style={styles.placeholderWeekText}>WEEK</Text>
+      <Text style={styles.placeholderNumberText}>{weekNumber}</Text>
+      <Text style={styles.placeholderTitleText}>{title}</Text>
+    </View>
+  );
 
   const renderWeekCard = ({ item }) => {
     const progressPercentage = (item.completed / item.workouts) * 100;
+    const hasImage = item.image && item.image !== 'https://via.placeholder.com/150';
     
     return (
-      <TouchableOpacity 
-        style={styles.card}
-        onPress={() => handleWeekPress(item.id)}
-        activeOpacity={0.7}
-      >
-        <Image source={{ uri: item.image }} style={styles.cardImage} />
-        <View style={styles.cardContent}>
-          <View style={styles.weekHeader}>
-            <Text style={styles.weekNumber}>Week {item.weekNumber}</Text>
-            <Text style={styles.workoutCount}>{item.workouts} workouts</Text>
-          </View>
-          <Text style={styles.weekTitle}>{item.title}</Text>
-          <Text style={styles.weekDescription}>{item.description}</Text>
+      <View style={styles.card}>
+        <TouchableOpacity 
+          style={styles.cardMain}
+          onPress={() => handleWeekPress(item.id)}
+          activeOpacity={0.7}
+        >
+          {hasImage ? (
+            <Image source={{ uri: item.image }} style={styles.cardImage} />
+          ) : (
+            <WeekPlaceholder weekNumber={item.weekNumber} title={item.title} />
+          )}
           
-          {/* Progress bar */}
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBackground}>
-              <View 
-                style={[
-                  styles.progressFill, 
-                  { width: `${progressPercentage}%` }
-                ]} 
-              />
+          <View style={styles.cardContent}>
+            <View style={styles.weekHeader}>
+              <Text style={styles.weekNumber}>Week {item.weekNumber}</Text>
+              <Text style={styles.workoutCount}>{item.workouts} workouts</Text>
             </View>
-            <Text style={styles.progressText}>
-              {item.completed}/{item.workouts} completed
-            </Text>
+            <Text style={styles.weekTitle}>{item.title}</Text>
+            <Text style={styles.weekDescription}>{item.description}</Text>
+            
+            {/* Progress bar */}
+            <View style={styles.progressContainer}>
+              <View style={styles.progressBackground}>
+                <View 
+                  style={[
+                    styles.progressFill, 
+                    { width: `${progressPercentage}%` }
+                  ]} 
+                />
+              </View>
+              <Text style={styles.progressText}>
+                {item.completed}/{item.workouts} completed
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        
+        {/* Add Image Button */}
+        <TouchableOpacity 
+          style={styles.addImageButton}
+          onPress={() => handleAddImage(item.id, item.weekNumber)}
+          activeOpacity={0.7}
+        >
+          <Image source={Icons.add} style={styles.addImageIcon} />
+          <Text style={styles.addImageText}>Add Image</Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -133,6 +170,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     overflow: 'hidden',
+  },
+  cardMain: {
+    width: '100%',
   },
   cardImage: {
     width: '100%',
@@ -189,6 +229,48 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 16,
+  },
+  addImageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
+  },
+  addImageIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 8,
+    tintColor: '#4CAF50',
+  },
+  addImageText: {
+    fontSize: 14,
+    color: '#4CAF50',
+    fontWeight: '500',
+  },
+  placeholderContainer: {
+    width: '100%',
+    height: 120,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderWeekText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  placeholderNumberText: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  placeholderTitleText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });
 

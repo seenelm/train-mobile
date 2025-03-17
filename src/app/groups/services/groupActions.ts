@@ -39,7 +39,7 @@ export const useFetchGroup = (groupId: ObjectId) => {
   });
 };
 
-export const useFetchUserGroups = (userId: ObjectId) => {
+export const useFetchUserGroups = (userId: string) => {
   return useQuery({
     queryKey: ["group", userId],
     queryFn: () => fetchUserGroups(userId),

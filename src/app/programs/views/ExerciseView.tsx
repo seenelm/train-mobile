@@ -1,109 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { MainStackParamList } from '../../../navigation/types/navigationTypes';
+import { useExercises } from '../services/programActions';
+import { Exercise } from '../services/programServices';
 
-// Sample data for exercises in a workout
-const workoutExercises = [
-  {
-    id: '1',
-    name: 'Barbell Bench Press',
-    muscleGroup: 'Chest',
-    sets: 4,
-    reps: '8-10',
-    rest: '90 sec',
-    weight: '135-185 lbs',
-    notes: 'Focus on full range of motion and controlled descent',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '2',
-    name: 'Incline Dumbbell Press',
-    muscleGroup: 'Upper Chest',
-    sets: 3,
-    reps: '10-12',
-    rest: '60 sec',
-    weight: '40-60 lbs',
-    notes: 'Keep elbows at 45-degree angle to protect shoulders',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '3',
-    name: 'Cable Flyes',
-    muscleGroup: 'Chest',
-    sets: 3,
-    reps: '12-15',
-    rest: '60 sec',
-    weight: '15-25 lbs',
-    notes: 'Focus on the stretch and contraction',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '4',
-    name: 'Overhead Tricep Extension',
-    muscleGroup: 'Triceps',
-    sets: 3,
-    reps: '12-15',
-    rest: '45 sec',
-    weight: '25-35 lbs',
-    notes: 'Keep elbows close to head',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '5',
-    name: 'Lateral Raises',
-    muscleGroup: 'Shoulders',
-    sets: 3,
-    reps: '12-15',
-    rest: '45 sec',
-    weight: '10-20 lbs',
-    notes: 'Slight bend in elbows, raise to shoulder height',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '6',
-    name: 'Face Pulls',
-    muscleGroup: 'Rear Delts',
-    sets: 3,
-    reps: '15-20',
-    rest: '45 sec',
-    weight: '20-30 lbs',
-    notes: 'Pull towards forehead with external rotation',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '7',
-    name: 'Tricep Pushdowns',
-    muscleGroup: 'Triceps',
-    sets: 3,
-    reps: '12-15',
-    rest: '45 sec',
-    weight: '30-50 lbs',
-    notes: 'Keep elbows at sides, fully extend arms',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '8',
-    name: 'Plank',
-    muscleGroup: 'Core',
-    sets: 3,
-    reps: '30-60 sec',
-    rest: '30 sec',
-    weight: 'Bodyweight',
-    notes: 'Maintain neutral spine position',
-    completed: false,
-    image: 'https://via.placeholder.com/150'
-  },
-];
-
+// Define the props for the ExerciseView component
 type ExerciseViewProps = {
   navigation: NavigationProp<MainStackParamList>;
   route: RouteProp<MainStackParamList, 'ExerciseView'>;
@@ -115,6 +18,18 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
   const { workoutId } = route.params;
   
   const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
+  const [selectedExercises, setSelectedExercises] = useState<{[key: string]: boolean}>({});
+  
+  // Use the custom hook to fetch exercises from RapidAPI
+  const { 
+    exercises, 
+    loading, 
+    error, 
+    bodyParts, 
+    selectedBodyPart,
+    filterByBodyPart,
+    resetFilters
+  } = useExercises();
 
   const toggleExerciseExpand = (exerciseId: string) => {
     if (expandedExercise === exerciseId) {
@@ -124,20 +39,68 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
     }
   };
 
-  const toggleExerciseComplete = (exerciseId: string) => {
-    // In a real app, you would update the exercise completion status
-    console.log(`Toggle completion for exercise ${exerciseId}`);
+  const toggleExerciseSelect = (exerciseId: string) => {
+    setSelectedExercises(prev => ({
+      ...prev,
+      [exerciseId]: !prev[exerciseId]
+    }));
   };
 
   const navigateToSetView = (exerciseId: string) => {
     navigation.navigate('SetView', { exerciseId });
   };
 
-  const renderExerciseItem = ({ item }) => {
+  // Simplified body part filter implementation
+  const renderBodyPartFilter = () => {
+    return (
+      <View style={styles.filterContainer}>
+        <FlatList
+          horizontal
+          data={['All', ...bodyParts]}
+          keyExtractor={(item) => item}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            const isSelected = 
+              (item === 'All' && selectedBodyPart === null) || 
+              (item !== 'All' && selectedBodyPart === item);
+            
+            return (
+              <TouchableOpacity
+                style={[
+                  styles.filterButton,
+                  isSelected && styles.filterButtonSelected
+                ]}
+                onPress={() => {
+                  if (item === 'All') {
+                    resetFilters();
+                  } else {
+                    filterByBodyPart(item);
+                  }
+                }}
+              >
+                <Text 
+                  style={[
+                    styles.filterButtonText,
+                    isSelected && styles.filterButtonTextSelected
+                  ]}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          contentContainerStyle={styles.filterList}
+        />
+      </View>
+    );
+  };
+
+  const renderExerciseItem = ({ item }: { item: Exercise }) => {
     const isExpanded = expandedExercise === item.id;
+    const isSelected = selectedExercises[item.id] || false;
     
     return (
-      <View style={styles.exerciseCard}>
+      <View style={[styles.exerciseCard, isSelected && styles.exerciseCardSelected]}>
         <TouchableOpacity 
           style={styles.exerciseHeader}
           onPress={() => toggleExerciseExpand(item.id)}
@@ -145,31 +108,43 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
         >
           <View style={styles.exerciseBasicInfo}>
             <Text style={styles.exerciseName}>{item.name}</Text>
-            <Text style={styles.muscleGroup}>{item.muscleGroup}</Text>
+            <Text style={styles.muscleGroup}>{item.bodyPart}</Text>
           </View>
-          <View style={styles.setInfo}>
-            <Text style={styles.setCount}>{item.sets} sets</Text>
-            <Text style={styles.repCount}>{item.reps}</Text>
-          </View>
+          <TouchableOpacity
+            style={[styles.selectButton, isSelected && styles.selectButtonSelected]}
+            onPress={() => toggleExerciseSelect(item.id)}
+          >
+            <Text style={[styles.selectButtonText, isSelected && styles.selectButtonTextSelected]}>
+              {isSelected ? 'Selected' : 'Select'}
+            </Text>
+          </TouchableOpacity>
         </TouchableOpacity>
         
         {isExpanded && (
           <View style={styles.expandedContent}>
-            <Image source={{ uri: item.image }} style={styles.exerciseImage} />
+            <Image 
+              source={{ uri: item.gifUrl }} 
+              style={styles.exerciseImage} 
+              resizeMode="cover"
+            />
             
             <View style={styles.exerciseDetails}>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Weight:</Text>
-                <Text style={styles.detailValue}>{item.weight}</Text>
+                <Text style={styles.detailLabel}>Body Part:</Text>
+                <Text style={styles.detailValue}>{item.bodyPart}</Text>
               </View>
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Rest:</Text>
-                <Text style={styles.detailValue}>{item.rest}</Text>
-              </View>
-              <View style={styles.notesContainer}>
-                <Text style={styles.notesLabel}>Notes:</Text>
-                <Text style={styles.notesText}>{item.notes}</Text>
-              </View>
+              {item.target && (
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Target Muscle:</Text>
+                  <Text style={styles.detailValue}>{item.target}</Text>
+                </View>
+              )}
+              {item.equipment && (
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Equipment:</Text>
+                  <Text style={styles.detailValue}>{item.equipment}</Text>
+                </View>
+              )}
             </View>
             
             <View style={styles.buttonContainer}>
@@ -178,19 +153,7 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
                 onPress={() => navigateToSetView(item.id)}
               >
                 <Text style={styles.logSetsButtonText}>
-                  Log Sets
-                </Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[
-                  styles.completeButton, 
-                  item.completed ? styles.completedButton : {}
-                ]}
-                onPress={() => toggleExerciseComplete(item.id)}
-              >
-                <Text style={styles.completeButtonText}>
-                  {item.completed ? 'Completed' : 'Mark as Complete'}
+                  Add to Workout
                 </Text>
               </TouchableOpacity>
             </View>
@@ -203,24 +166,51 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Text style={styles.workoutTitle}>Upper Body Power</Text>
+        <Text style={styles.workoutTitle}>Exercise Library</Text>
         <Text style={styles.workoutDescription}>
-          Focus on chest, shoulders, and triceps
+          Select exercises to add to your workout
         </Text>
       </View>
       
-      <FlatList
-        data={workoutExercises}
-        renderItem={renderExerciseItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
+      {renderBodyPartFilter()}
+      
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#000" />
+          <Text style={styles.loadingText}>Loading exercises...</Text>
+        </View>
+      ) : error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity 
+            style={styles.retryButton}
+            onPress={() => resetFilters()}
+          >
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <FlatList
+          data={exercises}
+          renderItem={renderExerciseItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+      )}
       
       <View style={[styles.footer, { paddingBottom: insets.bottom || 16 }]}>
-        <TouchableOpacity style={styles.finishButton}>
-          <Text style={styles.finishButtonText}>Finish Workout</Text>
+        <TouchableOpacity 
+          style={styles.finishButton}
+          onPress={() => {
+            const selectedExerciseIds = Object.keys(selectedExercises).filter(id => selectedExercises[id]);
+            console.log('Selected exercises:', selectedExerciseIds);
+            // Here you would save the selected exercises to the workout
+            navigation.goBack();
+          }}
+        >
+          <Text style={styles.finishButtonText}>Add Selected Exercises</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -238,13 +228,40 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
   },
   workoutTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 4,
   },
   workoutDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#666',
+  },
+  filterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    paddingVertical: 10,
+  },
+  filterList: {
+    paddingHorizontal: 16,
+  },
+  filterButton: {
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 8,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  filterButtonSelected: {
+    backgroundColor: '#000',
+  },
+  filterButtonText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  filterButtonTextSelected: {
+    color: 'white',
   },
   listContainer: {
     padding: 16,
@@ -252,12 +269,12 @@ const styles = StyleSheet.create({
   exerciseCard: {
     backgroundColor: 'white',
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
     overflow: 'hidden',
+  },
+  exerciseCardSelected: {
+    borderColor: '#000',
   },
   exerciseHeader: {
     flexDirection: 'row',
@@ -271,18 +288,37 @@ const styles = StyleSheet.create({
   exerciseName: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   muscleGroup: {
     fontSize: 14,
     color: '#666',
   },
+  selectButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    backgroundColor: '#f0f0f0',
+  },
+  selectButtonSelected: {
+    backgroundColor: '#000',
+  },
+  selectButtonText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#333',
+  },
+  selectButtonTextSelected: {
+    color: 'white',
+  },
   setInfo: {
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   setCount: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
+    marginRight: 8,
   },
   repCount: {
     fontSize: 14,
@@ -295,34 +331,33 @@ const styles = StyleSheet.create({
   },
   exerciseImage: {
     width: '100%',
-    height: 150,
+    height: 200,
     borderRadius: 8,
     marginBottom: 16,
+    backgroundColor: '#f9f9f9',
   },
   exerciseDetails: {
     marginBottom: 16,
   },
   detailRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginBottom: 8,
   },
   detailLabel: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '500',
+    width: 120,
   },
   detailValue: {
     fontSize: 14,
-    color: '#666',
+    flex: 1,
   },
   notesContainer: {
     marginTop: 8,
   },
   notesLabel: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '500',
     marginBottom: 4,
   },
   notesText: {
@@ -331,43 +366,36 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-    gap: 8,
+    marginTop: 8,
   },
   logSetsButton: {
-    backgroundColor: '#2196F3',
-    padding: 12,
+    backgroundColor: '#000',
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    flex: 1,
-    height: 44,
   },
   logSetsButtonText: {
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: '500',
   },
   completeButton: {
-    backgroundColor: '#4CAF50',
-    padding: 12,
+    marginTop: 8,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 0,
-    flex: 1,
-    height: 44,
   },
   completedButton: {
-    backgroundColor: '#8BC34A',
+    backgroundColor: '#e0f2e0',
   },
   completeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 14,
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '500',
   },
   separator: {
-    height: 12,
+    height: 16,
   },
   footer: {
     padding: 16,
@@ -375,15 +403,48 @@ const styles = StyleSheet.create({
     borderTopColor: '#f0f0f0',
   },
   finishButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
+    backgroundColor: '#000',
+    paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',
   },
   finishButtonText: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#666',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#d32f2f',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: '#000',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabs from './BottomTabs';
 import TopTabs from './TopTabs';
@@ -12,6 +13,9 @@ import WeekView from '../app/programs/views/WeekView';
 import WorkoutView from '../app/programs/views/WorkoutView';
 import ExerciseView from '../app/programs/views/ExerciseView';
 import SetView from '../app/programs/views/SetView';
+import CreateProgramForm from '../app/programs/components/CreateProgramForm';
+import Button from '../components/button';
+import * as Icons from '../assets/icons';
 
 import { MainStackParamList } from './types/navigationTypes';
 
@@ -52,6 +56,8 @@ const MainStack = () => {
         <Stack.Screen name="WeekView" component={WeekView} />
         <Stack.Screen name="WorkoutView" component={WorkoutView} />
         <Stack.Screen name="ExerciseView" component={ExerciseView} />
+        <Stack.Screen name="CreateProgram" component={CreateProgramForm} options={{presentation: "modal"}}/>
+        
         <Stack.Screen 
           name="SetView" 
           component={SetView} 
@@ -71,4 +77,5 @@ const MainStack = () => {
     );
   };
   
+
   export default MainStack;

@@ -13,23 +13,24 @@ import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
 import { useFetchUserGroups } from "../services/groupActions";
 import { ObjectId } from "../../../utils/objectId";
+import { UserGroupsResponse, GroupResponse } from "../types/groupTypes";
 
 
 const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
   const userId = useSelector(selectUser);
   // Only fetch user groups if userId exists
-  const { data: userGroupsResponse, isLoading, error } = userId ? useFetchUserGroups(new ObjectId(userId)) : { data: undefined, isLoading: false, error: null };
+  const { data: userGroupsResponse, isLoading, error } = userId ? useFetchUserGroups(userId) : { data: undefined, isLoading: false, error: null };
   
   // Extract the groups array from the response
-  const groups = userGroupsResponse?.groups || [];
+  const groups = (userGroupsResponse as UserGroupsResponse | undefined)?.groups || [];
 
 
   const nav = (screen: keyof MainStackParamList) => {
-    navigation.navigate(screen);
+    navigation.navigate(screen as any);
   };
 
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: GroupResponse }) => {
     console.log("Rendering item:", item);
     return (
       <Card
@@ -97,7 +98,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
           <FlatList
             data={groups}
             renderItem={renderItem}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item) => item._id.toString()}
             numColumns={groups.length === 1 ? 1 : 2}
             key={groups.length === 1 ? "singleColumn" : "doubleColumn"}
             refreshControl={<RefreshControl refreshing={false} onRefresh={handleRefresh} />}
