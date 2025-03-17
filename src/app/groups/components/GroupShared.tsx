@@ -1,75 +1,32 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp, useRoute, RouteProp } from "@react-navigation/native";
 import { MainStackParamList } from "../../../navigation/types/navigationTypes";
 import Button from "../../../components/button";
 import * as Icons from "../../../assets/icons";
+import { useFetchGroupPrograms } from "../services/groupActions";
+import { ProgramResponse } from "../models/Programs";
 
 type GroupSharedProps = {
   navigation: NavigationProp<MainStackParamList>;
+  groupId: string;
 };
 
-// Add this type definition after your GroupSharedProps type
-type WorkoutProgram = {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  icon: string;
-};
-
-// Sample workout program data
-const workoutPrograms = [
-  {
-    id: '1',
-    title: 'Beginner Strength Training',
-    description: 'A 4-week program for beginners to build foundational strength',
-    url: 'https://www.example.com/beginner-strength',
-    icon: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '2',
-    title: 'HIIT Cardio Challenge',
-    description: '30-day high intensity interval training for fat loss',
-    url: 'https://www.example.com/hiit-cardio',
-    icon: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '3',
-    title: 'Mobility & Recovery',
-    description: 'Essential stretches and mobility work for recovery days',
-    url: 'https://www.example.com/mobility',
-    icon: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '4',
-    title: 'Bodyweight Basics',
-    description: 'No equipment needed - full body workouts using just your bodyweight',
-    url: 'https://www.example.com/bodyweight',
-    icon: 'https://via.placeholder.com/150'
-  },
-  {
-    id: '5',
-    title: 'Powerlifting Program',
-    description: 'Advanced 12-week program focused on the big three lifts',
-    url: 'https://www.example.com/powerlifting',
-    icon: 'https://via.placeholder.com/150'
-  }
-];
-
-const GroupShared = ({ navigation }: GroupSharedProps) => {
+const GroupShared = ({ navigation, groupId }: GroupSharedProps) => {
+  const { data: programs, isLoading, error } = useFetchGroupPrograms(groupId);
+  console.log("programs: ", JSON.stringify(programs, null, 2));
   const insets = useSafeAreaInsets();
   
-
-  const renderItem = ({ item }: { item: WorkoutProgram }) => (
+  
+  const renderProgram = ({ item }: { item: ProgramResponse }) => (
     <TouchableOpacity 
       style={styles.itemContainer}
       onPress={() => navigation.navigate('WeekView')}
     >
-      <Image source={{ uri: item.icon }} style={styles.icon} />
+      <Image source={{ uri: item.imagePath }} style={styles.icon} />
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
       </View>
     </TouchableOpacity>
@@ -78,19 +35,19 @@ const GroupShared = ({ navigation }: GroupSharedProps) => {
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <FlatList
-        data={workoutPrograms}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
+        data={programs?.data}
+        renderItem={renderProgram}
+        keyExtractor={item => item._id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
       <Button
-            onPress={() => {navigation.navigate('CreateProgram')}}
-            imgSource={Icons.add}
-            style={styles.addButton}
-            imgStyle={styles.addIcon}
-          />
+        onPress={() => navigation.navigate('CreateProgram', { groupId })}
+        imgSource={Icons.add}
+        style={styles.addButton}
+        imgStyle={styles.addIcon}
+      />
     </View>
   );
 };

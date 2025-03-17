@@ -12,7 +12,6 @@ import logo from "../../../assets/icons/logo.png"
 import { selectUser } from "../../../services/authSlice";
 import { useSelector } from "react-redux";
 import { useFetchUserGroups } from "../services/groupActions";
-import { ObjectId } from "../../../utils/objectId";
 import { UserGroupsResponse, GroupResponse } from "../types/groupTypes";
 
 
@@ -37,7 +36,7 @@ const Dashboard: React.FC<DashboardProps> = ({ navigation }) => {
         imageUrl="https://via.placeholder.com/150"
         groupName={item.groupName}
         groupId={item._id}
-        onPress={() => nav("TopTabs")}
+        onPress={() => navigation.navigate("TopTabs", { groupId: item._id.toString() })}
       />
     );
   };

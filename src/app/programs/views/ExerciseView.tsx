@@ -31,6 +31,8 @@ const ExerciseView = ({ navigation, route }: ExerciseViewProps) => {
     resetFilters
   } = useExercises();
 
+  console.log("exercises: ", exercises);
+
   const toggleExerciseExpand = (exerciseId: string) => {
     if (expandedExercise === exerciseId) {
       setExpandedExercise(null);

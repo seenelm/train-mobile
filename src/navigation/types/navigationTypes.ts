@@ -2,7 +2,7 @@ import { NavigationProp } from "@react-navigation/native";
 
 export type MainStackParamList = {
   BottomTabs: undefined;
-  TopTabs: undefined;
+  TopTabs: { groupId: string };
   CreateEvent: undefined;
   SearchLocation: undefined;
   EventOverview: undefined;
@@ -14,7 +14,7 @@ export type MainStackParamList = {
   WorkoutView: { weekId: string };
   ExerciseView: { workoutId: string };
   SetView: { exerciseId: string };
-  CreateProgram: undefined;
+  CreateProgram: { groupId: string };
 };
 
 export type NavigationProps = {

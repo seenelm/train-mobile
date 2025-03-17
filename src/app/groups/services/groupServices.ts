@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 import { GroupProfileType, GroupType, UserGroupsResponse, GroupResponse } from "../types/groupTypes";
 import { api } from "../../../services/api";
+import { ProgramRequest } from "../models/Programs";
+import { GroupProgramsResponse } from "../models/GroupPrograms";
 
 export const addGroup = async ( group: GroupType ): Promise<GroupType | undefined> => {
   try {
@@ -71,5 +73,23 @@ export const joinGroup = async (groupId: ObjectId) => {
     return data;
   } catch (error) {
     console.error("joinGroup api error: ", error);
+  }
+}
+
+export const createGroupProgram = async (groupId: string, program: ProgramRequest) => {
+  try {
+    const { data } = await api.post(`/groups/${groupId}/programs`, program);
+    return data;
+  } catch (error) {
+    console.error("createGroupProgram api error: ", error);
+  }
+}
+
+export const fetchGroupPrograms = async (groupId: string): Promise<GroupProgramsResponse | undefined> => {
+  try {
+    const { data } = await api.get(`/groups/${groupId}/programs`);
+    return data;
+  } catch (error) {
+    console.error("fetchGroupPrograms api error: ", error);
   }
 }

@@ -7,22 +7,32 @@ import {
   TouchableOpacity, 
   ScrollView,
   Image,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useRoute } from '@react-navigation/native';
 import { MainStackParamList } from '../../../navigation/types/navigationTypes';
 import * as Icons from '../../../assets/icons';
+import { useCreateGroupProgram } from '../../groups/services/groupActions';
+import { ProgramRequest } from '../../groups/models/Programs';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../services/authSlice';
 
 type CreateProgramFormProps = {
   navigation: NavigationProp<MainStackParamList>;
 };
+
+type CreateProgramRouteProps = RouteProp<MainStackParamList, 'CreateProgram'>;
 
 const difficultyLevels = ['Beginner', 'Intermediate', 'Advanced'];
 const programCategories = ['Strength', 'Hypertrophy', 'Endurance', 'Weight Loss', 'Mobility'];
 
 const CreateProgramForm = ({ navigation }: CreateProgramFormProps) => {
   const insets = useSafeAreaInsets();
+  const route = useRoute<CreateProgramRouteProps>();
+  const { groupId } = route.params;
+  const userId = useSelector(selectUser);
   
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -31,6 +41,9 @@ const CreateProgramForm = ({ navigation }: CreateProgramFormProps) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [imageUrl, setImageUrl] = useState('https://via.placeholder.com/150');
 
+  // Get the mutation hook
+  const createGroupProgramMutation = useCreateGroupProgram();
+
   const handleCreateProgram = () => {
     // Validate form
     if (!title || !description || !duration || !selectedDifficulty || !selectedCategory) {
@@ -38,32 +51,61 @@ const CreateProgramForm = ({ navigation }: CreateProgramFormProps) => {
       return;
     }
 
+    if (!groupId) {
+      Alert.alert('Error', 'Group ID is missing. Cannot create program.');
+      return;
+    }
+
     // Create program object
-    const newProgram = {
-      id: Date.now().toString(),
-      title,
+    const newProgram: ProgramRequest = {
+      name: title,
       description,
-      duration: parseInt(duration, 10),
-      difficulty: selectedDifficulty,
       category: selectedCategory,
-      image: imageUrl,
-      weeks: [],
-      createdAt: new Date().toISOString(),
+      difficulty: selectedDifficulty,
+      imagePath: imageUrl,
+      createdBy: userId || 'unknown-user',
+      numWeeks: parseInt(duration, 10),
+      weeks: [], // This would be populated later
     };
 
-    // In a real app, you would save this to your backend
-    console.log('New program created:', newProgram);
-    
-    // Navigate to WeekView or another appropriate screen
-    Alert.alert(
-      'Program Created',
-      'Your program has been created successfully!',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack()
+    console.log('Creating program for group:', groupId);
+    console.log('Program data:', newProgram);
+
+    // Call the mutation
+    createGroupProgramMutation.mutate(
+      { groupId, program: newProgram },
+      {
+        onSuccess: () => {
+          console.log('Program created successfully');
+          
+          // Show success message
+          Alert.alert(
+            'Program Created',
+            'Your program has been created successfully!',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  // First dismiss the modal
+                  navigation.goBack();
+                  
+                  // Then navigate to WeekView after a short delay to ensure modal is dismissed
+                  setTimeout(() => {
+                    navigation.navigate('WeekView');
+                  }, 300);
+                }
+              }
+            ]
+          );
+        },
+        onError: (error) => {
+          console.error('Failed to create program:', error);
+          Alert.alert(
+            'Error',
+            'Failed to create program. Please try again.'
+          );
         }
-      ]
+      }
     );
   };
 
@@ -177,10 +219,18 @@ const CreateProgramForm = ({ navigation }: CreateProgramFormProps) => {
         </View>
         
         <TouchableOpacity 
-          style={styles.createButton}
+          style={[
+            styles.createButton,
+            createGroupProgramMutation.isLoading && styles.disabledButton
+          ]}
           onPress={handleCreateProgram}
+          disabled={createGroupProgramMutation.isLoading}
         >
-          <Text style={styles.createButtonText}>Create Program</Text>
+          {createGroupProgramMutation.isLoading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.createButtonText}>Create Program</Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -210,7 +260,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 8,
     color: '#333',
   },
@@ -229,7 +279,7 @@ const styles = StyleSheet.create({
   optionsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: -4,
+    marginTop: 8,
   },
   optionButton: {
     borderWidth: 1,
@@ -237,24 +287,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    margin: 4,
+    marginRight: 8,
+    marginBottom: 8,
     backgroundColor: '#f9f9f9',
   },
   selectedOption: {
-    backgroundColor: '#000',
-    borderColor: '#000',
+    backgroundColor: '#007bff',
+    borderColor: '#007bff',
   },
   optionText: {
-    fontSize: 14,
     color: '#333',
+    fontSize: 14,
   },
   selectedOptionText: {
     color: 'white',
-    fontWeight: 'bold',
   },
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 8,
   },
   previewImage: {
     width: 80,
@@ -264,25 +315,27 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     backgroundColor: '#f0f0f0',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
     borderRadius: 8,
-    padding: 12,
-    flex: 1,
-    alignItems: 'center',
   },
   uploadButtonText: {
     color: '#333',
     fontWeight: '500',
   },
   createButton: {
-    backgroundColor: '#000',
+    backgroundColor: '#007bff',
+    paddingVertical: 16,
     borderRadius: 8,
-    padding: 16,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 24,
+  },
+  disabledButton: {
+    backgroundColor: '#cccccc',
   },
   createButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

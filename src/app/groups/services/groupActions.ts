@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { ObjectId } from "mongodb";
-import { addGroup, fetchGroup, fetchUserGroups, fetchGroupRequests, fetchGroupImage, updateGroupProfile, joinGroup } from "./groupServices";
+import { addGroup, fetchGroup, fetchUserGroups, fetchGroupRequests, fetchGroupImage, updateGroupProfile, joinGroup, createGroupProgram, fetchGroupPrograms } from "./groupServices";
 import { GroupProfileType, GroupType } from "../types/groupTypes";
-
+import { ProgramRequest } from "../models/Programs";
 
 export const useAddGroup = () => {
   const queryClient = useQueryClient();
@@ -71,5 +71,27 @@ export const useJoinGroup = () => {
     onError: (error) => {
       console.error("useJoinGroupMutation error: ", error);
     },
+  });
+}
+
+export const useCreateGroupProgram = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ groupId, program }: { groupId: string, program: ProgramRequest }) => 
+      createGroupProgram(groupId, program),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["group"]);
+    },
+    onError: (error) => {
+      console.error("useCreateGroupProgram mutation error: ", error);
+    },
+  });
+}
+
+export const useFetchGroupPrograms = (groupId: string) => {
+  return useQuery({
+    queryKey: ["group", groupId, "programs"],
+    queryFn: () => fetchGroupPrograms(groupId),
   });
 }
